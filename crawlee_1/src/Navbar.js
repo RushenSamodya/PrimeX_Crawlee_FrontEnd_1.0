@@ -98,7 +98,7 @@ function Navbar() {
                     Courses
                 </NavLink>
 
-                <NavLink to='/StudentProfile'>
+                <NavLink to='/About'>
                     About
                 </NavLink>
 
