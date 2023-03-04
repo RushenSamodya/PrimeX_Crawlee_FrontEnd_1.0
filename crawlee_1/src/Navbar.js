@@ -70,6 +70,7 @@ function Navbar() {
     }
 
     const logo = require('./Images/crawleeimg.png');
+    
     return (
         <nav className="navbar">
             <img src={logo} alt="logo" className="logo"/>

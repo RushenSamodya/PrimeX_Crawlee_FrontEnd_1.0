@@ -7,6 +7,7 @@ import About from './About.js';
 import Courses from './Courses.js';
 import Login from './Login.js';
 import Signup from './Signup.js';
+import NavbarHorizontal from './NavbarHorizontal.jsx';
 
 //import TopNav2 from './TopNav2.jsx';
 //import Sidebar from './Sidebar.jsx';
@@ -17,7 +18,7 @@ function App() {
       
         {/* <TopNav2/>
         <Sidebar/> */}
-        <Navbar/>
+        <NavbarHorizontal/>
           <Routes>
             <Route path='/' element ={<Home/>}/>
             <Route path='courses' element ={<Courses/>}/>
