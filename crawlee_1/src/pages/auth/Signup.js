@@ -90,7 +90,7 @@ const Signup = () => {
                This is the future of Education. Start for free.
             </FirstMsg>
 
-            <ErrorMsg>error</ErrorMsg>
+            {/* <ErrorMsg>error</ErrorMsg> */}
 
             <Name>
                <i>

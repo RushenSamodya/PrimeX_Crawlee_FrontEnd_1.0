@@ -34,7 +34,7 @@ const Login = () => {
             <Title>Login</Title>
             <FirstMsg>Welcome back</FirstMsg>
 
-            <ErrorMsg>error</ErrorMsg>
+            {/* <ErrorMsg>error</ErrorMsg> */}
 
             <Email>
                <i className="email">

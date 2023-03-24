@@ -14,11 +14,12 @@ import ResetPassword  from "./pages/auth/ResetPassword";
 import Verify from "./pages/auth/Verify";
 
 import Home from "./pages/Home";
+import NavbarHorizontal from "./components/Navbar";
 function App() {
   return (
     <div className="App">
          <Router>
-           
+           <NavbarHorizontal/>
             <div className="page">
                <Routes>
                   <Route

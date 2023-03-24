@@ -6,7 +6,7 @@ export const GlobalStyle = createGlobalStyle`
 
  * {
   box-sizing: border-box;
-
+   
   
 }
 
@@ -32,7 +32,8 @@ export const Form = styled.form`
    width: 50%;
    height: 60%;
    margin: 0% auto;
-   padding: 5%;
+   
+   padding: 0 5%;
 
    a {
       color: #f0634c;
