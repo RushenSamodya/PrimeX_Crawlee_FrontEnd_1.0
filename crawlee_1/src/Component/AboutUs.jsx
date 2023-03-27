@@ -46,7 +46,7 @@ font-size: larger;
 `
 
 const Para = styled.span`
-    margin: 150px;
+    margin: 50px;
     position: relative;
     top: 40px;
 `
