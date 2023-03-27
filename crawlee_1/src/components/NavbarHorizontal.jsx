@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import logo from "../assets/crawleeimg.png";
 
 const MainContainer = styled.div`
   display: flex;
@@ -101,7 +102,7 @@ const LogoutBtn = styled.button`
 `;
 
 function NavbarHorizontal() {
-  const logo = require("./Images/crawleeimg.png");
+  
   const navigate = useNavigate();
 
   const btnStyles = {
