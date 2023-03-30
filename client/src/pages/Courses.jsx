@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { CourseData } from "../data";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -11,6 +11,8 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -200,8 +202,13 @@ function Courses() {
     navigate('/create-course');
   };
 
+  const [query, setQuery] = useState("Dashboard");
+
   return (
-    
+    <>
+    <Sidebar setQuery={setQuery} />
+      console.log(setQuery);
+      <Navbar query={query} />
     <Container>
       {teacher ? (<><Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -309,6 +316,7 @@ function Courses() {
       
       
     </Container>
+    </>
   );
 }
 

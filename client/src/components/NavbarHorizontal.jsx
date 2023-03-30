@@ -78,6 +78,7 @@ const RightSide = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin-left: 20px;
   padding: 20px;
   border: none;
@@ -90,7 +91,6 @@ const LoginBtn = styled.button`
   background-color: transparent;
   text-decoration: none;
   box-shadow: none;
-  
 `;
 
 const LogoutBtn = styled.button`
@@ -101,8 +101,12 @@ const LogoutBtn = styled.button`
   box-shadow: none;
 `;
 
+const Icon = styled.div`
+  font-size: 30px;
+  cursor: pointer;
+`;
+
 function NavbarHorizontal() {
-  
   const navigate = useNavigate();
 
   const btnStyles = {
@@ -154,6 +158,8 @@ function NavbarHorizontal() {
     },
   };
 
+  const user = true;
+
   return (
     <div>
       <MainContainer>
@@ -170,29 +176,37 @@ function NavbarHorizontal() {
         </Middle>
 
         <RightSide>
-          <LoginBtn>
-            <Stack spacing={2} direction="row">
-              <Button
-                onClick={() => navigate("/Pages/login")}
-                sx={btnStyles}
-                variant="outlined"
-              >
-                Login
-              </Button>
-            </Stack>
-          </LoginBtn>
+          {user ? (
+            <>
+              <StyledNavLink to="/dashboard/">Dashboard</StyledNavLink>
+            </>
+          ) : (
+            <>
+              <LoginBtn>
+                <Stack spacing={2} direction="row">
+                  <Button
+                    onClick={() => navigate("/Pages/login")}
+                    sx={btnStyles}
+                    variant="outlined"
+                  >
+                    Login
+                  </Button>
+                </Stack>
+              </LoginBtn>
 
-          <LogoutBtn>
-            <Stack spacing={2} direction="row">
-              <Button
-                onClick={() => navigate("/Pages/sign-up")}
-                sx={btnStyles}
-                variant="contained"
-              >
-                Sign Up
-              </Button>
-            </Stack>
-          </LogoutBtn>
+              <LogoutBtn>
+                <Stack spacing={2} direction="row">
+                  <Button
+                    onClick={() => navigate("/Pages/sign-up")}
+                    sx={btnStyles}
+                    variant="contained"
+                  >
+                    Sign Up
+                  </Button>
+                </Stack>
+              </LogoutBtn>
+            </>
+          )}
         </RightSide>
       </MainContainer>
     </div>

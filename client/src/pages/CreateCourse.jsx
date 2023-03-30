@@ -9,6 +9,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 
 const Container = styled.div`
   height: 100%;
@@ -86,18 +88,19 @@ function getStepContent(step) {
 }
 
 const CreateCourse = () => {
-//   const [show, setShow] = useState(false);
+  //   const [show, setShow] = useState(false);
 
-//   const handleClose = () => setShow(false);
-//   const handleShow = () => setShow(true);
+  //   const handleClose = () => setShow(false);
+  //   const handleShow = () => setShow(true);
+
 
   const [activeStep, setActiveStep] = useState(0);
   const [skippedSteps, setSkippedSteps] = useState([]);
   const steps = getSteps();
 
-//   const isStepOptional = (step) => {
-//     return step === 1 || step === 2;
-//   };
+  //   const isStepOptional = (step) => {
+  //     return step === 1 || step === 2;
+  //   };
 
   const isStepSkipped = (step) => {
     return skippedSteps.includes(step);
@@ -111,65 +114,73 @@ const CreateCourse = () => {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  const [query, setQuery] = useState("Dashboard");
+
   return (
-    <Container>
-      <Title>Add New Course</Title>
-      <Paper component={Box} p={3}>
-        <div>
-          <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step, index) => {
-              const labelProps = {};
-              const stepProps = {};
+    <>
+      <Sidebar setQuery={setQuery} />
+      console.log(setQuery);
+      <Navbar query={query} />
+      <Container>
+        <Title>Add New Course</Title>
+        <Paper component={Box} p={3}>
+          <div>
+            <Stepper alternativeLabel activeStep={activeStep}>
+              {steps.map((step, index) => {
+                const labelProps = {};
+                const stepProps = {};
 
-              if (isStepSkipped(index)) {
-                stepProps.completed = false;
-              }
-              return (
-                <Step {...stepProps} key={index}>
-                  <StepLabel {...labelProps}>{step}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
+                if (isStepSkipped(index)) {
+                  stepProps.completed = false;
+                }
+                return (
+                  <Step {...stepProps} key={index}>
+                    <StepLabel {...labelProps}>{step}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
 
-          {activeStep === steps.length ? (
-            <Typography variant="h3" align="center" sx={{ mt: 4, mb: 4 }}>
-              Course Has Been Saved.
-            </Typography>
-          ) : (
-            <>
-              <form>{getStepContent(activeStep)}</form>
-              <Button
-                hidden={activeStep === 0}
-                onClick={handleBack}
-                sx={{ m: 2 }}
-              >
-                back
-              </Button>
+            {activeStep === steps.length ? (
+              <Typography variant="h3" align="center" sx={{ mt: 4, mb: 4 }}>
+                Course Has Been Saved.
+              </Typography>
+            ) : (
+              <>
+                <form>{getStepContent(activeStep)}</form>
+                <Button
+                  hidden={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ m: 2 }}
+                >
+                  back
+                </Button>
 
-              <Button
-                hidden={activeStep === 1}
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                sx={{ m: 2 }}
-              >
-                Next
-              </Button>
-              <Button
-                hidden={activeStep === 0}
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                sx={{ m: 2 }}
-              >
-                Finish
-              </Button>
-            </>
-          )}
-        </div>
-      </Paper>
-    </Container>
+                <Button
+                  hidden={activeStep === 1}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  sx={{ m: 2 }}
+                >
+                  Next
+                </Button>
+                <Button
+                  hidden={activeStep === 0}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  sx={{ m: 2 }}
+                >
+                  Finish
+                </Button>
+              </>
+            )}
+          </div>
+        </Paper>
+      </Container>
+    </>
   );
 };
 
