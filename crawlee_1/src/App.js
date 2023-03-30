@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import backgroundImage02 from './Images/Background02.png';
 import Home from './Component/Home';
-import Course from './Component/Course';
+import Courses from './Component/Courses';
 import AboutUs from './Component/AboutUs';
 import Contact from './Component/Contact';
 
@@ -27,7 +27,7 @@ function App() {
         <br></br><br></br>
         <br></br><br></br>
         <br></br><br></br>
-      <Course></Course>
+      <Courses></Courses>
       <AboutUs></AboutUs>
       <Contact></Contact>
     </div>

@@ -72,7 +72,7 @@ position: absolute;
 left: 700px;
 `
 
-function Course() {
+function Courses() {
     return (
         <div>
             <br></br><br></br><br></br>
@@ -138,4 +138,4 @@ function Course() {
     )
 }
 
-export default Course
+export default Courses

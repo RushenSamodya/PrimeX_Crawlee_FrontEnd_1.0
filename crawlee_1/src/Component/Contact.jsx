@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../Images/CarwleeLogo.png";
+import logo from "../Images/CarwleeLogo.jpg";
 
 const Container01 = styled.div`
 background-color: #e78e81;
