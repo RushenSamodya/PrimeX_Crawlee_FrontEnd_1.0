@@ -10,8 +10,6 @@ import course06Img from '../Images/Full stack.png';
 import course07Img from '../Images/ComArchi.jpeg';
 import course08Img from '../Images/ComNet.jpg';
 
-import '../App.css';
-
 
 const Container02 = styled.div`
 background-image:url(${backgroundImage02}) ;
@@ -45,8 +43,9 @@ background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 15px 15px 15px rgba(0,0,0,0.2);
   position: relative;
+  justify-content: center;
   align-content: center;
-  align-items: center;
+  
 `
 const Cimage = styled.div`
   width:200px;
@@ -84,25 +83,25 @@ function Course() {
                 <Box>
                 <Text>Artificial Intelligent</Text>
                 <Cimage>
-                <img width={200} height={200} src={course01Img}/>
+                <img width={200} height={200} src={course01Img} style={{borderRadius: '15px'}}/>
                 </Cimage>
                 </Box>
                 <Box>
                 <Text>UI/UX Design</Text>
                 <Cimage>
-                <img width={200} height={200} src={course02Img}/>
+                <img width={200} height={200} src={course02Img} style={{borderRadius: '15px'}}/>
                 </Cimage>
                 </Box>
                 <Box>
                 <Text>Python</Text>
                 <Cimage>
-                <img width={200} height={200} src={course03Img}/>
+                <img width={200} height={200} src={course03Img} style={{borderRadius: '15px'}}/>
                 </Cimage>
                 </Box>
                 <Box>
                 <Text>C++ fo Beginers</Text>
                 <Cimage>
-                <img width={200} height={200} src={course04Img}/>
+                <img width={200} height={200} src={course04Img} style={{borderRadius: '15px'}}/>
                 </Cimage>
                 </Box>
                 </ImgContainer>
@@ -110,25 +109,25 @@ function Course() {
                 <Box>
                 <Text>Web Devolopment for Beginers</Text>
                 <Cimage>
-                <img width={200} height={200} src={course05Img}/>
+                <img width={200} height={200} src={course05Img} style={{borderRadius: '15px'}}/>
                 </Cimage>
                 </Box>
                 <Box>
                 <Text>Full Stack course</Text>
                 <Cimage>
-                <img width={200} height={200} src={course06Img}/>
+                <img width={200} height={200} src={course06Img} style={{borderRadius: '15px'}}/>
                 </Cimage>
                 </Box>
                 <Box>
                 <Text>Computer Architecture</Text>
                 <Cimage>
-                <img width={200} height={200} src={course07Img}/>
+                <img width={200} height={200} src={course07Img} style={{borderRadius: '15px'}}/>
                 </Cimage>
                 </Box>
                 <Box>
                 <Text>Computer networking</Text>
                 <Cimage>
-                <img width={200} height={200} src={course08Img}/>
+                <img width={200} height={200} src={course08Img} style={{borderRadius: '15px'}}/>
                 </Cimage>
                 </Box>
                 </ImgContainer>

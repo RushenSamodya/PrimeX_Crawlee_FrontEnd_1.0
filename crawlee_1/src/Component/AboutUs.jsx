@@ -133,7 +133,7 @@ function AboutUs () {
                 <Para margin-right={100}>I see this opportunity as a way to contribute to an exciting/forward-thinking/fast-moving company/industry, and I feel I can do so by/with my …” “I feel my skills are particularly well-suited to this position because " I see this opportunity as a way to contribute to an exciting/forward-thinking/fast-moving company/industry, and I feel I can do so by/with my …” “I feel my skills are particularly well-suited to this position because "</Para>
                 </TextBox>
                 <AImg>
-                <img height={500} src={graduate}/>
+                <img height={500} src={graduate} style={{borderRadius: '15px'}}/>
                 </AImg>
             </SpanContainer>
             <StyledButton>Join With Us</StyledButton>
