@@ -81,6 +81,11 @@ const StyledButton = styled.button`
   color: #ffff;
   position: relative;
   left: 435px;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+  &:hover {
+    margin: 9px 13px;
+  }
 `;
 
 const Title = styled.div`

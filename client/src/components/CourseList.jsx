@@ -73,7 +73,11 @@ const Button = styled.button`
   border-radius: 20px;
   border: #f0634c;
   color: #ffff;
-  left: 700px;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+  &:hover {
+    margin: 10px 13px;
+  }
 `;
 
 function Course() {

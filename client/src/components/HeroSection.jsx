@@ -55,6 +55,11 @@ const StyledButton = styled.button`
   border-radius: 10px;
   border: #f0634c;
   color: #ffff;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+  &:hover {
+    margin: 9px 13px;
+  }
 `;
 
 const ImgContainer = styled.div`
