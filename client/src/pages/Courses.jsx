@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { CourseData } from "../data";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,6 +12,7 @@ import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { Button, Container, CourseBar, CourseCategory, CourseContainer, CourseName, CourseTab, CourseType, CourseTypeSection, CreateCourse, DeleteButton, Divider, EditButton, Header, Icon, ImageContainer, InfoContainer, TopSection, Wrapper } from "../styles/pageStyles/CoursesStyles";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,146 +46,7 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-const Container = styled.div`
-  height: 100%;
-  width: 80%;
-  display: flex;
-  margin: 15px 5px 0px 260px;
-  padding: 5px;
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-`;
 
-const Divider = styled.div`
-  height: 20px;
-  width: 2px;
-  margin: 0px 20px;
-  background-color: rgba(119, 124, 136, 1);
-`;
-
-const CourseContainer = styled.div`
-  height: 100%;
-  background-color: rgba(245, 245, 245, 1);
-  border-radius: 15px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const TopSection = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Header = styled.h4`
-  margin-left: 20px;
-`;
-
-const CreateCourse = styled.div``;
-const Button = styled.button`
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background-color: rgba(240, 99, 76, 1);
-  color: white;
-  transition: all 0.1s ease-in;
-  &:hover {
-    padding: 13px;
-  }
-`;
-
-const CourseTypeSection = styled.div`
-  display: flex;
-  margin-left: 20px;
-  font-size: 14px;
-  color: rgba(119, 124, 136, 1);
-`;
-const CourseType = styled.div``;
-
-const CourseTab = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
-const Wrapper = styled.div`
-  flex: 9;
-  width: 100%;
-`;
-
-const CourseBar = styled.div`
-  margin: 5px;
-  width: 100%;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  box-shadow: #dadada;
-  border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
-  background-color: white;
-  overflow: hidden;
-`;
-
-const ImageContainer = styled.img`
-  align-items: center;
-  width: 60px;
-  height: 60px;
-  margin-left: 15px;
-  border-radius: 50%;
-  background-color: red;
-  object-fit: cover;
-`;
-
-const InfoContainer = styled.div`
-  font-size: 10px;
-  height: 90%;
-  width: 80%;
-
-  display: flex;
-  flex-direction: column;
-`;
-const CourseCategory = styled.span`
-  margin-top: 5px;
-  font-size: 12px;
-  font-weight: 300;
-  color: rgba(119, 124, 136, 1);
-`;
-const CourseName = styled.span`
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 3px;
-  cursor: pointer;
-`;
-
-const Icon = styled.div`
-  display: flex;
-  flex: 2;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-`;
-
-const EditButton = styled.button`
-  padding: 5px 8px;
-  border-radius: 10px;
-  &:hover {
-    padding: 6px 9px;
-  }
-`;
-const DeleteButton = styled.button`
-  padding: 5px 8px;
-  border-radius: 10px;
-  border: 2px solid rgba(240, 99, 76, 1);
-  color: rgba(240, 99, 76, 1);
-  &:hover {
-    padding: 6px 9px;
-  }
-`;
 
 function Courses() {
   const now = 60;

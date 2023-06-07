@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { RiNotification2Fill } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
@@ -9,91 +8,11 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { CenterContainer, Container, Icon, IconBtn, LeftContainer, Line, LinkText, LogoutBtn, NameContainer, RightContainer, Role, Username } from "../styles/componentStyles/NavbarStyles";
 
-
-const Container = styled.div`
-  height: 10vh;
-  display: flex;
-  margin: 0px 5px 0px 260px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  
-`;
-
-const LeftContainer = styled.div`
-  font-size: 30px;
-  color: rgba(119, 124, 136, 1);
-  margin-left: 25px;
-`;
-
-const CenterContainer = styled.div`
-  display: flex;
-  flex: 2;
-  margin-right: 40px;
-  align-items: center;
-  justify-content: flex-end;
-`;
-const LogoutBtn = styled.button`
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: #f0634c solid 2px;
-  background-color: white;
-  color: #f0634c;
-  cursor: pointer;
-  transition: all 0.2s ease-in;
-  &:hover {
-    padding: 9px 13px;
-  }
-`;
-const IconBtn = styled.div`
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-`;
-
-const LinkText = styled.div`
-  font-size: 14px;
-  text-decoration: none;
-`;
-
-const RightContainer = styled.div`
-  margin-right: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  color: rgba(119, 124, 136, 1);
-`;
-const Icon = styled.div`
-  font-size: 30px;
-  cursor: pointer;
-`;
-const Line = styled.div`
-  height: 35px;
-  width: 2px;
-  background-color: rgba(119, 124, 136, 1);
-`;
-const NameContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-`;
-const Username = styled.span`
-  font-size: 20px;
-`;
-const Role = styled.span`
-  color: #f0634c;
-  font-size: 12px;
-  font-weight: 900;
-`;
 
 export default function Navbar({ query }) {
-  const teacher = false;
+  const teacher = true;
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { Container, Wrapper } from "../styles/pageStyles/DashboardStyles";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,23 +48,11 @@ function a11yProps(index) {
   };
 }
 
-const Container = styled.div`
-  height: 100%;
-  display: flex;
-  margin: 15px 5px 0px 260px;
-  padding: 5px;
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-`;
 
-const Wrapper = styled.div`
-  display: flex;
-`;
 
 function Dashboard() {
   const teacher = true;
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -84,7 +73,7 @@ function Dashboard() {
                 <Tabs
                   value={value}
                   onChange={handleChange}
-                  aria-label="basic tabs example"
+                  aria-label="basic tabs"
                   textColor="inherit"
                   TabIndicatorProps={{
                     style: {

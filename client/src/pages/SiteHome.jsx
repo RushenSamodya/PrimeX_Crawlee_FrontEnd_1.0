@@ -6,7 +6,6 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   margin: 15px 5px 0px 260px;
-  background-color: red;
   padding: 5px;
  
 `;
@@ -14,7 +13,7 @@ const Container = styled.div`
 function SiteHome() {
   return (
     <Container>
-      <NavbarHorizontal/>
+     
     </Container>
   )
 }

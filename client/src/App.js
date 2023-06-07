@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import { useState } from "react";
 import CreateCourse from "./pages/CreateCourse";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   // const [query, setQuery] = useState("Dashboard");
@@ -25,6 +27,8 @@ function App() {
           <Route path="/messages" element={<Messages />} />
           <Route path="/home" element={<SiteHome />} />
           <Route path="/create-course" element={<CreateCourse />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup/>} />
         </Routes>
       </Router>
     </div>
