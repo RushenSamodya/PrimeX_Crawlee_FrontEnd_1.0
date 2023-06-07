@@ -1,17 +1,11 @@
 import React from "react";
 import Card from "./Card";
-import styled from "styled-components";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import { MdIncompleteCircle } from "react-icons/md";
 import { AiOutlineFileDone } from "react-icons/ai";
+import { Container } from "../styles/componentStyles/StudentCardsStyles";
 
-const Container = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 10px;
-`;
+
 
 const StudentCards = () => {
   return (

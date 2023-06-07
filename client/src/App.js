@@ -7,25 +7,28 @@ import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
 import CreateCourse from "./pages/CreateCourse";
-import NavbarHorizontal from "./components/NavbarHorizontal.jsx";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
-  const [query, setQuery] = useState("Dashboard");
+  // const [query, setQuery] = useState("Dashboard");
 
   return (
     <div className="App">
-      {/* <NavbarHorizontal /> */}
-
       <Router>
-        <Sidebar setQuery={setQuery} />
+        {/* <Sidebar setQuery={setQuery} />
         console.log(setQuery);
-        <Navbar query={query} />
+        <Navbar query={query} /> */}
         <Routes>
+          <Route path="/" exact element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/home" element={<SiteHome />} />
           <Route path="/create-course" element={<CreateCourse />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup/>} />
         </Routes>
       </Router>
     </div>

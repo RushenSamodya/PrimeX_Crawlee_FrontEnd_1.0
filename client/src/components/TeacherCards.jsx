@@ -1,17 +1,11 @@
 import React from "react";
 import Card from "./Card";
-import styled from "styled-components";
 import { MdIncompleteCircle } from "react-icons/md";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { TbSum } from "react-icons/tb";
 import { IoMdSchool } from "react-icons/io";
-const Container = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 10px;
-`;
+import { Container } from "../styles/componentStyles/TeacherCardsStyles";
+
 const TeacherCards = () => {
   return (
     <Container>
