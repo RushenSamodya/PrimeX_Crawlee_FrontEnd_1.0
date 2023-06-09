@@ -1,68 +1,55 @@
-import {
-  Button,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  TextField,
-} from "@mui/material";
-import React, { useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import SourceIcon from "@mui/icons-material/Source";
-import Box from "@mui/material/Box";
-import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { Container, Title, EditedListItemText } from "../styles/pageStyles/CreateCourseStyles";
+import {
+  Container,
+  DynamicFieldWrapper,
+  FieldWrapper,
+  StyledButton,
+  StyledErrorMessage,
+  StyledField,
+  StyledLabel,
+  StyledSecondaryButton,
+} from "../styles/pageStyles/CreateCourseStyles";
+import { Form, Formik, Field, ErrorMessage, FieldArray } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
+const initialValues = {
+  courseName: "",
+  description: "",
+  instructor: "",
+  courseCover: "",
+  lessons: [{ title: "", description: "", material: "" }],
+};
+
+const onSubmit = async (values) => {
+  // console.log("Form data", values);
+  try {
+    const response = await axios.post(
+      "http://localhost:8800/api/courses",
+      values
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const validationSchema = Yup.object({
+  courseName: Yup.string().required("Required"),
+  instructor: Yup.string().required("Required"),
+});
 
 const CreateCourse = () => {
-  const [query, setQuery] = useState("Dashboard");
-  let [array, setArray] = useState([]);
-  let [inputData, setInputData] = useState({ chapter: "", content: "" });
-  let [index, setIndex] = useState();
-  let [bolin, setBolin] = useState(false);
-  let { chapter, content } = inputData;
+  const [query, setQuery] = useState("Create Course");
 
-  function data(e) {
-    setInputData({ ...inputData, [e.target.name]: e.target.value });
-  }
+  const { user } = useContext(AuthContext);
 
-  //Input Data
-  function addInputData() {
-    setArray([...array, { chapter, content }]);
-    console.log(inputData);
-    setInputData({ chapter: "", content: "" });
-  }
-
-  //Delete Data
-  function deleteData(i) {
-    console.log(i, "This row is delete.");
-    let total = [...array];
-    total.splice(i, 1);
-    setArray(total);
-  }
-
-  //Update Data
-
-  function updateData(i) {
-    let { chapter, content } = array[i]; //this row is going to update
-    setInputData({ chapter, content });
-    setBolin(true);
-    setIndex(i);
-  }
-
-  function updateInfo() {
-    let total = [...array];
-    total.splice(index, 1, { chapter, content });
-    setArray(total);
-    setBolin(false);
-    setInputData({ chapter: "", content: "" });
-  }
+  console.log(user);
 
   return (
     <>
@@ -70,155 +57,115 @@ const CreateCourse = () => {
       console.log(setQuery);
       <Navbar query={query} />
       <Container>
-        <Title>Add New Course</Title>
-        <TextField
-          id="first-name"
-          label="Course Name"
-          variant="outlined"
-          placeholder="Enter Course Name"
-          sx={{
-            width: 500,
-          }}
-          margin="normal"
-          name="firstName"
-        />
-        <TextField
-          id="last-name"
-          label="Course Category"
-          variant="outlined"
-          placeholder="Enter Course Category"
-          sx={{
-            width: 500,
-          }}
-          margin="normal"
-          name="lastName"
-        />
-
-        <Button
-          variant="contained"
-          component="label"
-          sx={{ width: 300, mt: 2, mb: 2 }}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
         >
-          Upload Course Cover
-          <input hidden accept="image/*" multiple type="file" />
-        </Button>
+          <Form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              width: "50%",
+            }}
+          >
+            <FieldWrapper>
+              <StyledLabel htmlFor="courseName">Course Name</StyledLabel>
+              <StyledField type="text" id="courseName" name="courseName" />
+              <StyledErrorMessage component="span" name="courseName" />
+            </FieldWrapper>
 
-        <TextField
-          id="nick-name"
-          label="Course Description"
-          variant="outlined"
-          placeholder="Enter Course Description"
-          sx={{
-            width: 900,
-          }}
-          margin="normal"
-          name="nickName"
-          multiline
-          rows={7}
-          maxRows={10}
-        />
+            <FieldWrapper>
+              <StyledLabel htmlFor="description">Description</StyledLabel>
+              <StyledField
+                type="textarea"
+                id="description"
+                name="description"
+              />
+            </FieldWrapper>
 
-        <Title>Add Course Content</Title>
+            <FieldWrapper>
+              <StyledLabel htmlFor="instructor">Instructor Name</StyledLabel>
+              <StyledField type="text" id="instructor" name="instructor" />
+            </FieldWrapper>
 
-        <TextField
-          id="outlined-basic"
-          label="Chapter Name"
-          variant="outlined"
-          margin="dense"
-          name="chapter"
-          sx={{
-            width: 500,
-          }}
-          value={inputData.chapter || ""}
-          onChange={data}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Add Content"
-          variant="outlined"
-          margin="dense"
-          name="content"
-          sx={{
-            width: 500,
-          }}
-          value={inputData.content || ""}
-          onChange={data}
-          multiline
-          maxRows={4}
-        />
+            <FieldWrapper>
+              <StyledLabel htmlFor="courseCover">
+                Course Cover Image
+              </StyledLabel>
+              <Field type="file" id="courseCover" name="courseCover" />
+            </FieldWrapper>
 
-        <Button
-          variant="outlined"
-          margin="dense"
-          sx={{
-            width: 500,
-            mb: "30px",
-          }}
-          onClick={!bolin ? addInputData : updateInfo}
-          click
-        >
-          {!bolin ? "Add" : "Update"}
-        </Button>
-        {array &&
-          array.map((item, i) => {
-            return (
-              <Box
-                sx={{
-                  width: "100%",
-                  maxWidth: 500,
-                  bgcolor: "background.paper",
-                }}
-                key={i}
-              >
-                <Divider sx={{ bgcolor: "black" }} />
-                <List>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <ViewHeadlineIcon />
-                      </ListItemIcon>
-                      <EditedListItemText primary={item.chapter} />
-                    </ListItemButton>
-                  </ListItem>
+            <FieldWrapper>
+              <h4 htmlFor="addLessons">Add Lessons</h4>
+            </FieldWrapper>
 
-                  <ListItem>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <SourceIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={item.content} />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem>
-                    <IconButton
-                      set
-                      sx={{ color: "red" }}
-                      aria-label="delete"
-                      onClick={() => deleteData(i)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton
-                      set
-                      sx={{ color: "black" }}
-                      aria-label="delete"
-                      onClick={() => updateData(i)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </ListItem>
-                </List>
-                <Divider sx={{ bgcolor: "black" }} />
-              </Box>
-            );
-          })}
-        <Button
-          variant="contained"
-          component="label"
-          sx={{ width: 100, mt: 2, mb: 2 }}
-        >
-          Submit
-        </Button>
+            <FieldArray name="lessons">
+              {(fieldArrayProps) => {
+                // console.log("fieldArrayProps", fieldArrayProps);
+                const { push, remove, form } = fieldArrayProps;
+                const { values } = form;
+                const { lessons } = values;
+                return (
+                  <div>
+                    {lessons.map((lesson, index) => (
+                      <div key={index}>
+                        <DynamicFieldWrapper>
+                          <StyledLabel htmlFor="instructor">Title</StyledLabel>
+                          <StyledField
+                            type="text"
+                            name={`lessons[${index}].title`}
+                          />
+                          <StyledLabel htmlFor="instructor">
+                            Description
+                          </StyledLabel>
+                          <StyledField
+                            type="text"
+                            name={`lessons[${index}].description`}
+                          />
+                          <StyledLabel htmlFor="instructor">
+                            Upload Material
+                          </StyledLabel>
+                          <Field
+                            type="file"
+                            name={`lessons[${index}].material`}
+                          />
+
+                          {
+                            <StyledSecondaryButton
+                              type="button"
+                              onClick={() => remove(index)}
+                            >
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                Remove
+                                <DeleteIcon fontSize="small" />
+                              </div>
+                            </StyledSecondaryButton>
+                          }
+                        </DynamicFieldWrapper>
+                      </div>
+                    ))}
+
+                    <StyledButton type="button" onClick={() => push("")}>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        Add
+                        <AddIcon fontSize="small" />
+                      </div>
+                    </StyledButton>
+                  </div>
+                );
+              }}
+            </FieldArray>
+
+            <button type="submit">Submit</button>
+          </Form>
+        </Formik>
       </Container>
     </>
   );

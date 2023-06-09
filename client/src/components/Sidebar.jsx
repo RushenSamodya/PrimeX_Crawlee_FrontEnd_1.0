@@ -40,6 +40,7 @@ function Sidebar({ setQuery }) {
     <Container>
       <SidebarContainer>
         <TopSection>
+          
           <LogoContainer>
             <Logo src={logo} alt="logo" />
           </LogoContainer>
