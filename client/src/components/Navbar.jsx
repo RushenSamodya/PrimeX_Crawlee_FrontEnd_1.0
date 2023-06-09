@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { RiNotification2Fill } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
@@ -9,11 +9,14 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { CenterContainer, Container, Icon, IconBtn, LeftContainer, Line, LinkText, LogoutBtn, NameContainer, RightContainer, Role, Username } from "../styles/componentStyles/NavbarStyles";
+import { AuthContext } from "../context/AuthContext";
 
 
 export default function Navbar({ query }) {
   const teacher = true;
   const [show, setShow] = useState(false);
+
+  const { user,dispatch } = useContext(AuthContext);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -180,8 +183,8 @@ export default function Navbar({ query }) {
           <FaUserCircle />
         </Icon>
         <NameContainer>
-          <Username>Username</Username>
-          <Role>{teacher ? 'Teacher' : 'Student'}</Role>
+          <Username>{user.username}</Username>
+          <Role>{user.isTeacher ? 'Teacher' : 'Student'}</Role>
         </NameContainer>
       </RightContainer>
     </Container>

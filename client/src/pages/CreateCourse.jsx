@@ -17,6 +17,7 @@ import { Form, Formik, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { Button } from "@mui/material";
 
 const initialValues = {
   courseName: "",
@@ -50,6 +51,41 @@ const CreateCourse = () => {
   const { user } = useContext(AuthContext);
 
   console.log(user);
+
+  const [images, setImages] = useState([]);
+  const [imgToRemove, setImgToRemove] = useState(null);
+
+  function handleRemoveImg(imgObj) {
+    setImgToRemove(imgObj.public_id);
+    axios
+      .delete(`http://localhost:8800/images/${imgObj.public_id}/`)
+      .then((res) => {
+        setImgToRemove(null);
+        setImages((prev) =>
+          prev.filter((img) => img.public_id !== imgObj.public_id)
+        );
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function showWidget() {
+    const widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: "srilankan-cloudname",
+        uploadPreset: "aonqrjz7",
+      },
+      (error, result) => {
+        if (!error && result.event === "success") {
+          setImages((prev) => [
+            ...prev,
+            { url: result.info.url, public_id: result.info.public_id },
+            
+          ]);
+        }
+      }
+    );
+    widget.open();
+  }
 
   return (
     <>
@@ -127,10 +163,25 @@ const CreateCourse = () => {
                           <StyledLabel htmlFor="instructor">
                             Upload Material
                           </StyledLabel>
-                          <Field
-                            type="file"
-                            name={`lessons[${index}].material`}
-                          />
+                          <Button type="button" onClick={showWidget}>
+                            Upload Images
+                          </Button>
+                          <div className="images-preview-container">
+                            {images.map((image) => (
+                              <div className="image-preview">
+                                <img src={image.url} alt={image.url} width="400" height="200"/>
+                                {/* <video width="320" height="240" controls>
+                <source src={image.url} type="video/mp4" />
+              </video> */}
+                                {imgToRemove !== image.public_id && (
+                                  <i
+                                    className="fa fa-times-circle"
+                                    onClick={() => handleRemoveImg(image)}
+                                  ></i>
+                                )}
+                              </div>
+                            ))}
+                          </div>
 
                           {
                             <StyledSecondaryButton
@@ -163,7 +214,7 @@ const CreateCourse = () => {
               }}
             </FieldArray>
 
-            <button type="submit">Submit</button>
+            <StyledButton type="submit">Submit</StyledButton>
           </Form>
         </Formik>
       </Container>

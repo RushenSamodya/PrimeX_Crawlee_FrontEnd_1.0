@@ -4,8 +4,22 @@ import { SiGooglechat } from "react-icons/si";
 import { TbWorld } from "react-icons/tb";
 import { BiLogOut } from "react-icons/bi";
 import logo from "../assets/logo.png";
-import { BottomSection, Container, Icon, Link, LinkText, Logo, LogoContainer, LogoutBtn, SidebarContainer, StyledLink, TopSection } from "../styles/componentStyles/SideBarStyles";
-
+import {
+  BottomSection,
+  Container,
+  Icon,
+  Link,
+  LinkText,
+  Logo,
+  LogoContainer,
+  LogoutBtn,
+  SidebarContainer,
+  StyledLink,
+  TopSection,
+} from "../styles/componentStyles/SideBarStyles";
+import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function Sidebar({ setQuery }) {
   const handleClick = (name) => {
@@ -30,20 +44,23 @@ function Sidebar({ setQuery }) {
       icon: <SiGooglechat />,
     },
     {
-      path: "/home",
+      path: "/",
       name: "Site Home",
       icon: <TbWorld />,
     },
   ];
 
+  const { dispatch } = useContext(AuthContext);
+
   return (
     <Container>
       <SidebarContainer>
         <TopSection>
-          
-          <LogoContainer>
-            <Logo src={logo} alt="logo" />
-          </LogoContainer>
+          <NavLink to="/">
+            <LogoContainer>
+              <Logo src={logo} alt="logo" />
+            </LogoContainer>
+          </NavLink>
         </TopSection>
         <Link>
           {menuItem.map((item, index) => (
@@ -60,12 +77,18 @@ function Sidebar({ setQuery }) {
           ))}
         </Link>
         <BottomSection>
-          <LogoutBtn>
-            <Icon>
-              <BiLogOut />
-            </Icon>
-            <LinkText>Log Out</LinkText>
-          </LogoutBtn>
+          <NavLink to="/" style={{textDecoration:'none'}}>
+            <LogoutBtn
+              onClick={() => {
+                dispatch({ type: "LOGOUT" });
+              }}
+            >
+              <Icon>
+                <BiLogOut />
+              </Icon>
+              <LinkText>Log Out</LinkText>
+            </LogoutBtn>
+          </NavLink>
         </BottomSection>
       </SidebarContainer>
     </Container>
