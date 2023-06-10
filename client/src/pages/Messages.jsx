@@ -7,6 +7,7 @@ import axios from "axios";
 
 const Messages = () => {
   const [query, setQuery] = useState("Messages");
+  
   const [images, setImages] = useState([]);
   const [imgToRemove, setImgToRemove] = useState(null);
 

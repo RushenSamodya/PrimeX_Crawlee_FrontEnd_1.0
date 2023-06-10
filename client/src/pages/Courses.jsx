@@ -63,7 +63,7 @@ function Courses() {
     navigate('/create-course');
   };
 
-  const [query, setQuery] = useState("Dashboard");
+  const [query, setQuery] = useState("Courses");
 
   return (
     <>

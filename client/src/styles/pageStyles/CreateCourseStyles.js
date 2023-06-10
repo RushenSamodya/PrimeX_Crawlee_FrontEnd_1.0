@@ -28,14 +28,14 @@ export const FieldWrapper = styled.div`
   flex-direction: column;
 `
 export const DynamicFieldWrapper = styled.div`
-width: fit-content;
+ width: 80%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   background-color: #f3f3f3;
   border-radius: 10px;
   margin: 0 0 20px 0;
-  padding: 10px;
+  padding: 20px;
 `
 
 export const StyledField = styled(Field)`
@@ -66,6 +66,14 @@ export const StyledButton = styled.button`
   font-weight: 400;
   margin: 20px 0;
 `
+export const SubmitButton = styled(StyledButton)`
+  padding: 7px 14px;
+  font-size: 16px;
+  &:disabled{
+    background-color: #e69587;
+  }
+`
+
 export const StyledSecondaryButton = styled.button`
   width: fit-content;
   padding: 4px 8px;
@@ -76,4 +84,9 @@ export const StyledSecondaryButton = styled.button`
   border-radius: 5px;
   font-weight: 400;
  
+`
+
+
+export const ImageWrapper = styled.div`
+  display: flex;
 `
