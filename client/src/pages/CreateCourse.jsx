@@ -57,6 +57,7 @@ const CreateCourse = () => {
   const initialValues = {
     courseName: "",
     description: "",
+    courseCategory: "",
     instructor: "",
     instructorName: "",
     courseCover: [],
@@ -188,6 +189,11 @@ const CreateCourse = () => {
               <FieldWrapper>
                 <StyledLabel htmlFor="description">Description</StyledLabel>
                 <StyledField type="text" id="description" name="description" />
+              </FieldWrapper>
+
+              <FieldWrapper>
+                <StyledLabel htmlFor="courseCategory">Course Category</StyledLabel>
+                <StyledField type="text" id="courseCategory" name="courseCategory" />
               </FieldWrapper>
 
               <FieldWrapper>
