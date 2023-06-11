@@ -10,6 +10,10 @@ import CreateCourse from "./pages/CreateCourse";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import AdminUserManagement from "./pages/Admin/AdminUserManagement";
+import AdminCourseManagement from "./pages/Admin/AdminCourseManagement";
+
+
 
 function App() {
   // const [query, setQuery] = useState("Dashboard");
@@ -29,6 +33,8 @@ function App() {
           <Route path="/create-course" element={<CreateCourse />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup/>} />
+          <Route path="/userManagement" element={<AdminUserManagement/>} />
+          <Route path="/courseManagement" element={<AdminCourseManagement/>} />
         </Routes>
       </Router>
     </div>
