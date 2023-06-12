@@ -287,9 +287,9 @@ const UserManagement = () => {
                       </td>
                       <td>
                         {user.enrolledCourses.map((enrolledCourse) => (
-                          <span key={enrolledCourse.courseId}>
+                          <p key={enrolledCourse.courseId}>
                             {courseNames[enrolledCourse.courseId]}
-                          </span>
+                          </p>
                         ))}
                       </td>
                       <td>
