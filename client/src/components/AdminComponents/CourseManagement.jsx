@@ -25,6 +25,7 @@ import ChangeCourseStatus from "./ChangeCourseStatus";
 import axios from 'axios';
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import Skeleton from "react-loading-skeleton";
 
 const CourseManagement = () => {
   const [courses, setCourses] = useState([]);
@@ -35,9 +36,11 @@ const CourseManagement = () => {
   const [numOfEnrolledStudents, setNumOfEnrolledStudents] = useState({});
   const [instructors, setInstructors] = useState({});
   const [filterStatus, setFilterStatus] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchCourses = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get("http://localhost:8800/api/courses", {
         withCredentials: true,
       });
@@ -64,8 +67,11 @@ const CourseManagement = () => {
         instructorNames[course._id] = user.data.username;
       }
       setInstructors(instructorNames);
+
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -93,18 +99,17 @@ const CourseManagement = () => {
     setFilterStatus(status);
   };
 
-  //filter the users by name and role
   const filteredCourses = courses.filter(course => {
-   const matchesSearchQuery = course.courseName.toLowerCase().includes(searchQuery.toLowerCase());
-   if (filterStatus === "all") {
-     return matchesSearchQuery;
-   } else if (filterStatus === "active") {
-     return matchesSearchQuery && !course.suspended;
-   } else if (filterStatus === "suspended") {
-     return matchesSearchQuery && course.suspended;
-   }
-   return matchesSearchQuery;
- });
+    const matchesSearchQuery = course.courseName.toLowerCase().includes(searchQuery.toLowerCase());
+    if (filterStatus === "all") {
+      return matchesSearchQuery;
+    } else if (filterStatus === "active") {
+      return matchesSearchQuery && !course.suspended;
+    } else if (filterStatus === "suspended") {
+      return matchesSearchQuery && course.suspended;
+    }
+    return matchesSearchQuery;
+  });
 
   const deleteCourse = async (courseId) => {
     try {
@@ -178,12 +183,12 @@ const CourseManagement = () => {
               value={searchQuery}
               onChange={handleSearch}
             />
-            
+
           </TopRow>
           <FilterRole>
-          <label htmlFor="filterRole">Filter by Status :  
-               </label> &nbsp; 
-          <select
+            <label htmlFor="filterRole">Filter by Status :  
+            </label> &nbsp; 
+            <select
               value={filterStatus}
               onChange={(e) => handleFilterStatusChange(e.target.value)}
             >
@@ -191,49 +196,98 @@ const CourseManagement = () => {
               <option value="active">Active</option>
               <option value="suspended">Suspended</option>
             </select>
-            </FilterRole>
-            <br/>
+          </FilterRole>
+          <br/>
           <TableBox>
-            <Table striped bordered hover responsive>
-              <thead>
-                <tr className="table-danger">
-                  <th>Id</th>
-                  <th>Course name</th>
-                  <th>Instructor's name</th>
-
-                  <th>Change status</th>
-                  <th>Enrolled students</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCourses.map((course, index) => (
-                  <tr key={course._id}>
-                    <td>{index + 1}</td>
-                    <td>{course.courseName}</td>
-                    <td>{instructors[course._id] !== undefined ? instructors[course._id] : 'Loading...'}</td>
-                    <td>
-                      <ChangeCourseStatus
-                        courseId={course._id}
-                        initialStatus={course.suspended ? "suspended" : "active"}
-                        fetchCourses={fetchCourses}
-                      />
-                    </td>
-                    <td>
-                      {numOfEnrolledStudents[course._id] !== undefined ? numOfEnrolledStudents[course._id] : 'Loading...'}
-                    </td>
-                    <th>
-                      <FaTrashAlt
-                        color="red"
-                        onClick={() => deleteCourse(course._id)}
-                        style={{ cursor: "pointer" }}
-                      />
-                    </th>
+            {isLoading ? (
+              <Table striped bordered hover responsive>
+                <thead>
+                  <tr>
+                      <th>
+                        <Skeleton width={40} />
+                      </th>
+                      <th>
+                        <Skeleton width={150} />
+                      </th>
+                      <th>
+                        <Skeleton width={150} />
+                      </th>
+                      <th>
+                        <Skeleton width={100} />
+                      </th>
+                      <th>
+                        <Skeleton width={40} />
+                      </th>
+                      <td>
+                        <Skeleton width={40} />
+                      </td>
+                    </tr>
+                </thead>
+                <tbody>
+                  {[...Array(5)].map((_, index) => (
+                    <tr key={index}>
+                      <td>
+                        <Skeleton width={40} />
+                      </td>
+                      <td>
+                        <Skeleton width={150} />
+                      </td>
+                      <td>
+                        <Skeleton width={150} />
+                      </td>
+                      <td>
+                        <Skeleton width={100} />
+                      </td>
+                      <td>
+                        <Skeleton width={40} />
+                      </td>
+                      <td>
+                        <Skeleton width={40} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              <Table striped bordered hover responsive>
+                <thead>
+                  <tr className="table-danger">
+                    <th>Id</th>
+                    <th>Course name</th>
+                    <th>Instructor's name</th>
+                    <th>Change status</th>
+                    <th>Enrolled students</th>
+                    <th>Delete</th>
                   </tr>
-                ))}
-
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {filteredCourses.map((course, index) => (
+                    <tr key={course._id}>
+                      <td>{index + 1}</td>
+                      <td>{course.courseName}</td>
+                      <td>{instructors[course._id] !== undefined ? instructors[course._id] : 'Loading...'}</td>
+                      <td>
+                        <ChangeCourseStatus
+                          courseId={course._id}
+                          initialStatus={course.suspended ? "suspended" : "active"}
+                          fetchCourses={fetchCourses}
+                        />
+                      </td>
+                      <td>
+                        {numOfEnrolledStudents[course._id] !== undefined ? numOfEnrolledStudents[course._id] : 'Loading...'}
+                      </td>
+                      <th>
+                        <FaTrashAlt
+                          color="red"
+                          onClick={() => deleteCourse(course._id)}
+                          style={{ cursor: "pointer" }}
+                        />
+                      </th>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
           </TableBox>
         </UserList>
       </Container>
