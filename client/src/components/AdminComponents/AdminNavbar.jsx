@@ -16,7 +16,7 @@ export default function AdminNavbar({ query }) {
 //   const teacher = true;
 //   const [show, setShow] = useState(false);
 
-//   const { user,dispatch } = useContext(AuthContext);
+  const { user,dispatch } = useContext(AuthContext);
 
 //   const handleClose = () => setShow(false);
 //   const handleShow = () => setShow(true);
@@ -34,7 +34,7 @@ export default function AdminNavbar({ query }) {
           <FaUserCircle />
         </Icon>
         <NameContainer>
-          <Username>name</Username>
+          <Username>{user.username}</Username>
           <Role>Admin</Role>
         </NameContainer>
       </RightContainer>
