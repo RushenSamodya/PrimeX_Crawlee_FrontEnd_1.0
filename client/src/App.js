@@ -10,6 +10,7 @@ import CreateCourse from "./pages/CreateCourse";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import SingleCourse from "./pages/SingleCourse";
 
 function App() {
   // const [query, setQuery] = useState("Dashboard");
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/:courseId" element={<SingleCourse />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/home" element={<SiteHome />} />
           <Route path="/create-course" element={<CreateCourse />} />

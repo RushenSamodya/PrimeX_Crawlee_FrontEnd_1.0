@@ -1,29 +1,68 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Card from "./Card";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import { MdIncompleteCircle } from "react-icons/md";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { Container } from "../styles/componentStyles/StudentCardsStyles";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 
 
 const StudentCards = () => {
+
+  const [enrolledCoursesCount, setEnrolledCoursesCount] = useState(null)
+  const [activeCoursesCount, setActiveCoursesCount] = useState(null)
+  const [incompleteCoursesCount, setIncompleteCoursesCount] = useState(null)
+
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8800/api/users/${user._id}`)
+      .then(({ data }) => {
+        console.log(data.enrolledCourses.length);
+        setEnrolledCoursesCount(data.enrolledCourses.length)
+        // setUserEnrolledCourses(data.enrolledCourses);
+ 
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    const countCompleteCourses = user.enrolledCourses.filter(
+      (course) => course.status === 'Complete'
+    ).length;
+    setActiveCoursesCount(countCompleteCourses);
+    console.log("countCompleteCourses",countCompleteCourses)
+  }, []);
+
+  useEffect(() => {
+    const countIncompleteCourses = user.enrolledCourses.filter(
+      (course) => course.status === 'Incomplete'
+    ).length;
+    setIncompleteCoursesCount(countIncompleteCourses);
+    console.log("countIncompleteCourses",countIncompleteCourses)
+  }, []);
+
   return (
     <Container>
       <>
         <Card
           title={"Enrolled Courses"}
-          value={20}
+          value={enrolledCoursesCount}
           icon={<BsFillBookmarkFill />}
         />
         <Card
           title={"Active Courses"}
-          value={10}
+          value={incompleteCoursesCount}
           icon={<MdIncompleteCircle />}
         />
         <Card
           title={"Completed Courses"}
-          value={10}
+          value={activeCoursesCount}
           icon={<AiOutlineFileDone />}
         />
       </>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import StudentCards from "../components/StudentCards";
 import MyCourses from "../components/MyCourses";
@@ -14,9 +14,12 @@ import Box from "@mui/material/Box";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { Container, Wrapper } from "../styles/pageStyles/DashboardStyles";
+import { AuthContext } from "../context/AuthContext";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+
+  
 
   return (
     <div
@@ -51,7 +54,7 @@ function a11yProps(index) {
 
 
 function Dashboard() {
-  const teacher = true;
+  const { user } = useContext(AuthContext);
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -66,7 +69,7 @@ function Dashboard() {
       console.log(setQuery);
       <Navbar query={query} />
       <Container>
-        {teacher ? (
+        {user.isTeacher ? (
           <>
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

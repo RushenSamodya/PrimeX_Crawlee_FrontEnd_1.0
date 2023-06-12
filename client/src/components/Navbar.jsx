@@ -16,6 +16,7 @@ export default function Navbar({ query }) {
   const teacher = true;
   const [show, setShow] = useState(false);
 
+  
   const { user,dispatch } = useContext(AuthContext);
 
   const handleClose = () => setShow(false);
@@ -24,7 +25,7 @@ export default function Navbar({ query }) {
     <Container data-aos="fade-down">
       <LeftContainer>{query}</LeftContainer>
       <CenterContainer>
-        {teacher ? (
+        {user.isTeacher ? (
           <></>
         ) : (
           <>

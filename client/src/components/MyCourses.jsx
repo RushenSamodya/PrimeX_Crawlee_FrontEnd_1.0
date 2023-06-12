@@ -5,6 +5,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { BottomContainer, BottomText, Container, CourseContainer, FilterIcon, Header, TopSection } from "../styles/componentStyles/MyCoursesStyles";
 
 const MyCourses = () => {
+  
+  
+
   return (
     <Container>
       <TopSection>
@@ -27,7 +30,7 @@ const MyCourses = () => {
       <CourseContainer>
         <CourseProgress />
       </CourseContainer>
-      <BottomContainer><BottomText>See more</BottomText></BottomContainer>
+      <BottomContainer><BottomText></BottomText></BottomContainer>
     </Container>
   );
 };

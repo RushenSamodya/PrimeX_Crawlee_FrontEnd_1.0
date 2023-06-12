@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
+  width: fit-content;
   flex-direction: column;
   margin: 20px;
   padding: 20px;
@@ -18,9 +19,12 @@ export const CourseContainer = styled.div`
   justify-content: flex-start;
   gap: 10px;
   overflow: hidden;
-  height: 260px;
+  height: fit-content;
 `;
 
-export const Title = styled.h2`
+export const Title = styled.span`
   margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
 `;
+

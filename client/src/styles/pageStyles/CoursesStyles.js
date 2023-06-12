@@ -102,11 +102,19 @@ export const InfoContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
 `;
 export const CourseCategory = styled.span`
   margin-top: 5px;
   font-size: 12px;
   font-weight: 300;
+  color: rgba(119, 124, 136, 1);
+`;
+
+export const CourseInstructor = styled.span`
+  
+  font-size: 16px;
+  font-weight: 400;
   color: rgba(119, 124, 136, 1);
 `;
 export const CourseName = styled.span`
