@@ -22,6 +22,7 @@ import Search from "./Search";
 import ChangeRole from "./ChangeRole";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton"; // Import the Skeleton component from react-loading-skeleton
 
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -36,6 +37,7 @@ const UserManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [courseNames, setCourseNames] = useState({});
   const [filterRole, setFilterRole] = useState("All");
+  const [isLoading, setIsLoading] = useState(true); // Add isLoading state
 
   const fetchUsers = async () => {
     try {
@@ -76,6 +78,8 @@ const UserManagement = () => {
         }
       }
       setCourseNames(enrolledCourseNames);
+
+      setIsLoading(false); // Set isLoading to false after data fetching is complete
     } catch (error) {
       console.log(error);
     }
@@ -86,9 +90,7 @@ const UserManagement = () => {
     fetchUsers();
   }, [user.token]);
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
+
 
   const deleteUser = async (userId) => {
     try {
@@ -174,83 +176,133 @@ const UserManagement = () => {
         <UserList>
           <TopRow>
             <h3>Users</h3>
-            
+
             <Search
               value={searchQuery}
-              onChange={handleSearchChange}
+              onChange={ (event) =>
+                setSearchQuery(event.target.value)}
               placeholder="Search users by name"
             />
           </TopRow>
-          
-         
-              <FilterRole>
-             
-              <label htmlFor="filterRole">Filter by Role :  
-               </label> &nbsp; 
-              <select
-                id="filterRole"
-                value={filterRole}
-                onChange={(e) => setFilterRole(e.target.value)}
-              >
-                <option value="All">All</option>
-                <option value="Student">Student</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Admin">Admin</option>
-              </select>
-             
-              </FilterRole>
-           
-            <br />
-          <TableBox>
-            <Table striped bordered hover responsive>
-              <thead>
-                <tr class="table-danger">
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Enrolled courses</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map((user, index) => (
-                  <tr key={user._id}>
-                    <td>{index + 1}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
 
-                    <td>
-                      <ChangeRole
-                        userId={user._id}
-                        initialRole={
-                          user.isAdmin
-                            ? "Admin"
-                            : user.isTeacher
-                            ? "Teacher"
-                            : "Student"
-                        }
-                        fetchUsers={fetchUsers}
-                      />
-                    </td>
-                    <td>
-                      {user.enrolledCourses.map((enrolledCourse) => (
-                        <span key={enrolledCourse.courseId}>
-                          {courseNames[enrolledCourse.courseId]}
-                        </span>
-                      ))}
-                    </td>
-                    <td>
-                      <FaTrashAlt
-                        color="red"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => deleteUser(user._id)}
-                      />
-                    </td>
+          <FilterRole>
+            <label htmlFor="filterRole">Filter by Role: </label> &nbsp;
+            <select
+              id="filterRole"
+              value={filterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+            >
+              <option value="All">All</option>
+              <option value="Student">Student</option>
+              <option value="Teacher">Teacher</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </FilterRole>
+
+          <br />
+
+          <TableBox>
+            {isLoading ? ( // Display skeleton loading effect while loading
+              <Table striped bordered hover responsive>
+                <thead>
+                  <tr>
+                    <th>
+                      <Skeleton width={40} />
+                    </th>
+                    <th>
+                      <Skeleton width={100} />
+                    </th>
+                    <th>
+                      <Skeleton width={150} />
+                    </th>
+                    <th>
+                      <Skeleton width={80} />
+                    </th>
+                    <th>
+                      <Skeleton width={150} />
+                    </th>
+                    <th>
+                      <Skeleton width={40} />
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {[1, 2, 3, 4, 5, 6].map((index) => ( // Display multiple skeleton rows
+                    <tr key={index}>
+                      <td>
+                        <Skeleton width={40} />
+                      </td>
+                      <td>
+                        <Skeleton width={100} />
+                      </td>
+                      <td>
+                        <Skeleton width={150} />
+                      </td>
+                      <td>
+                        <Skeleton width={80} />
+                      </td>
+                      <td>
+                        <Skeleton width={150} />
+                      </td>
+                      <td>
+                        <Skeleton width={40} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              // Render actual data when not loading
+              <Table striped bordered hover responsive>
+                <thead>
+                  <tr class="table-danger">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Enrolled courses</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers.map((user, index) => (
+                    <tr key={user._id}>
+                      <td>{index + 1}</td>
+                      <td>{user.username}</td>
+                      <td>{user.email}</td>
+
+                      <td>
+                        <ChangeRole
+                          userId={user._id}
+                          initialRole={
+                            user.isAdmin
+                              ? "Admin"
+                              : user.isTeacher
+                              ? "Teacher"
+                              : "Student"
+                          }
+                          fetchUsers={fetchUsers}
+                        />
+                      </td>
+                      <td>
+                        {user.enrolledCourses.map((enrolledCourse) => (
+                          <span key={enrolledCourse.courseId}>
+                            {courseNames[enrolledCourse.courseId]}
+                          </span>
+                        ))}
+                      </td>
+                      <td>
+                        <FaTrashAlt
+                          color="red"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => deleteUser(user._id)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
           </TableBox>
         </UserList>
       </Container>
