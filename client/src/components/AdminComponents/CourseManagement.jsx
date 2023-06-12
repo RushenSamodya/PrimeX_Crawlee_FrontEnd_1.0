@@ -93,6 +93,7 @@ const CourseManagement = () => {
     setFilterStatus(status);
   };
 
+  //filter the users by name and role
   const filteredCourses = courses.filter(course => {
    const matchesSearchQuery = course.courseName.toLowerCase().includes(searchQuery.toLowerCase());
    if (filterStatus === "all") {
