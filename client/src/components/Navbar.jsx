@@ -8,20 +8,50 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { CenterContainer, Container, Icon, IconBtn, LeftContainer, Line, LinkText, LogoutBtn, NameContainer, RightContainer, Role, Username } from "../styles/componentStyles/NavbarStyles";
+import {
+  CenterContainer,
+  Container,
+  Icon,
+  IconBtn,
+  LeftContainer,
+  Line,
+  LinkText,
+  LogoutBtn,
+  NameContainer,
+  RightContainer,
+  Role,
+  Username,
+} from "../styles/componentStyles/NavbarStyles";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router";
+import {
+  FieldWrapper,
+  StyledErrorMessage,
+  StyledField,
+  StyledLabel,
+} from "../styles/pageStyles/CreateCourseStyles";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Input, TextField } from "@mui/material";
+import { Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
+import axios from "axios";
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function Navbar({ query }) {
   const teacher = true;
   const [show, setShow] = useState(false);
-  const [ isProfile , setIsProfile] = useState(false)
+  const [isProfile, setIsProfile] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarType, setSnackbarType] = useState("");
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  
-  const { user,dispatch } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -29,11 +59,69 @@ export default function Navbar({ query }) {
   const handleProfile = () => {
     setIsProfile(true);
     navigate("/profile");
+  };
 
-  }
+  //Snackbar Functions
+  const handleOpenSnackbar = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      subjects: "",
+      experience: "",
+      requestedUser: user._id,
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required("Required"),
+      lastName: Yup.string().required("Required"),
+      email: Yup.string().email("Must be a valid email").required("Required"),
+      phoneNumber: Yup.string()
+        .matches(/^\d+$/, "Phone number must be numeric")
+        .min(10, "Phone number must be at least 10 digits")
+        .max(10, "Phone number can have at most 10 digits")
+        .required("Required"),
+      subjects: Yup.string().required("Required"),
+      experience: Yup.string().required("Required"),
+    }),
+
+    onSubmit: async (values) => {
+      // console.log('values',values)
+      try {
+        const response = await axios.post(
+          "http://localhost:8800/api/teacherrequests",
+          values
+        );
+        console.log(response.data);
+        setSnackbarType("success");
+        setSnackbarMsg("Send Successfully");
+        handleOpenSnackbar();
+        
+      } catch (error) {
+        console.log(error);
+        setSnackbarType("error");
+        setSnackbarMsg(error.response.data);
+        handleOpenSnackbar();
+      }
+    },
+  });
   return (
     <Container data-aos="fade-down">
-      <LeftContainer>{isProfile? query = "User Profile": query}</LeftContainer>
+      <LeftContainer>
+        {isProfile ? (query = "User Profile") : query}
+      </LeftContainer>
       <CenterContainer>
         {user.isTeacher ? (
           <></>
@@ -51,136 +139,192 @@ export default function Navbar({ query }) {
                 <Modal.Title>How to become an Instructor</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <Form className="mb-3">
-                  <Row>
-                    <Col>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Control
-                          type="name"
-                          placeholder="First Name"
-                          autoFocus
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Control
-                          type="name"
-                          placeholder="Last Name"
-                          autoFocus
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <Form.Group 
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Control
-                          type="email"
-                          placeholder="Email"
-                          autoFocus
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Control
-                          type="tel"
-                          placeholder="Phone Number"
-                          autoFocus
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <div className="mb-1">
-                      <b>Gender *</b>
-                    </div>
+                <Snackbar
+                  open={openSnackbar}
+                  autoHideDuration={5000}
+                  onClose={handleCloseSnackbar}
+                >
+                  <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={snackbarType}
+                    sx={{ width: "100%" }}
+                  >
+                    {snackbarMsg}
+                  </Alert>
+                </Snackbar>
 
+                <form
+                  action=""
+                  className="create-order-form"
+                  onSubmit={formik.handleSubmit}
+                >
+                  <Row>
                     <Col>
-                      <div className="mb-4">
-                        <Form.Check 
-                          inline
-                          label="Male"
-                          name="group1"
-                          type="radio"
-                        />
-                        <Form.Check
-                          inline
-                          label="Female"
-                          name="group1"
-                          type="radio"
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                  <Col>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Control
-                          type="text"
-                          placeholder="Subjects"
-                          autoFocus
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                  <Col>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Control
-                           as="textarea" rows={3} 
-                          placeholder="Experience/Qualifications *"
-                          autoFocus
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                  <Col>
-                      <Form.Group
-                        className="mb-1"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Control
-                          type="password"
-                          placeholder="Password"
-                          autoFocus
-                        />
-                      </Form.Group>
+                      <TextField
+                        placeholder="First Name"
+                        size="small"
+                        fullWidth
+                        margin="normal"
+                        type="text"
+                        name="firstName"
+                        value={formik.values.firstName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.firstName &&
+                          Boolean(formik.errors.firstName)
+                        }
+                        helperText={
+                          formik.touched.firstName && formik.errors.firstName
+                            ? formik.errors.firstName
+                            : " "
+                        }
+                      />
                     </Col>
                     <Col>
-                      
+                      <TextField
+                        placeholder="Last Name"
+                        size="small"
+                        fullWidth
+                        margin="normal"
+                        type="text"
+                        name="lastName"
+                        value={formik.values.lastName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.lastName &&
+                          Boolean(formik.errors.lastName)
+                        }
+                        helperText={
+                          formik.touched.lastName && formik.errors.lastName
+                            ? formik.errors.lastName
+                            : " "
+                        }
+                      />
                     </Col>
                   </Row>
-                </Form>
+
+                  <Row>
+                    <Col>
+                      <TextField
+                        placeholder="Email"
+                        fullWidth
+                        margin="normal"
+                        size="small"
+                        type="text"
+                        name="email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.email && Boolean(formik.errors.email)
+                        }
+                        helperText={
+                          formik.touched.email && formik.errors.email
+                            ? formik.errors.email
+                            : " "
+                        }
+                      />
+                    </Col>
+                    <Col>
+                      <TextField
+                        placeholder="Phone Number"
+                        fullWidth
+                        margin="normal"
+                        size="small"
+                        type="text"
+                        name="phoneNumber"
+                        value={formik.values.phoneNumber}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.phoneNumber &&
+                          Boolean(formik.errors.phoneNumber)
+                        }
+                        helperText={
+                          formik.touched.phoneNumber &&
+                          formik.errors.phoneNumber
+                            ? formik.errors.phoneNumber
+                            : " "
+                        }
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <TextField
+                        placeholder="Subjects"
+                        sx={{ width: 600 }}
+                        margin="normal"
+                        size="small"
+                        type="text"
+                        name="subjects"
+                        value={formik.values.subjects}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.subjects &&
+                          Boolean(formik.errors.subjects)
+                        }
+                        helperText={
+                          formik.touched.subjects && formik.errors.subjects
+                            ? formik.errors.subjects
+                            : " "
+                        }
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <TextField
+                        placeholder="Experience/ Qualifications"
+                        sx={{ width: 600 }}
+                        margin="normal"
+                        size="small"
+                        type="text"
+                        name="experience"
+                        value={formik.values.experience}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.experience &&
+                          Boolean(formik.errors.experience)
+                        }
+                        helperText={
+                          formik.touched.experience && formik.errors.experience
+                            ? formik.errors.experience
+                            : " "
+                        }
+                      />
+                      <TextField
+                        placeholder="Experience/ Qualifications"
+                        sx={{ width: 600 }}
+                        margin="normal"
+                        size="small"
+                        type="text"
+                        name="requestedUser"
+                        value={user._id}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        hidden
+                      />
+                    </Col>
+                  </Row>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="primary"
+                      style={{ backgroundColor: "#f0634c", border: "none" }}
+                      onClick={formik.handleSubmit}
+                    >
+                      Save Changes
+                    </Button>
+                  </Modal.Footer>
+                </form>
               </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  Close
-                </Button>
-                <Button variant="primary" style={{ backgroundColor: '#f0634c', border:'none' }} onClick={handleClose}>
-                  Save Changes
-                </Button>
-              </Modal.Footer>
             </Modal>
           </>
         )}
@@ -193,10 +337,10 @@ export default function Navbar({ query }) {
         <Icon>
           <FaUserCircle />
         </Icon>
-        
+
         <NameContainer onClick={handleProfile}>
-          <Username style={{cursor:'pointer'}}>{user.username}</Username>
-          <Role>{user.isTeacher ? 'Teacher' : 'Student'}</Role>
+          <Username style={{ cursor: "pointer" }}>{user.username}</Username>
+          <Role>{user.isTeacher ? "Teacher" : "Student"}</Role>
         </NameContainer>
       </RightContainer>
     </Container>

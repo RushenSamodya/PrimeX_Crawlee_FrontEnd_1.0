@@ -3,9 +3,6 @@ import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import Messages from "./pages/Messages";
 import SiteHome from "./pages/SiteHome";
-import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar";
-import { useState } from "react";
 import CreateCourse from "./pages/CreateCourse";
 import Home from "./pages/Home";
 import Login from "./pages/Authentication/Login";
@@ -22,19 +19,18 @@ import ResetPassword from "./pages/Authentication/ResetPassword";
 import SingleCourse from "./pages/SingleCourse";
 import CourseEdit from "./pages/CourseEdit";
 import StudentProfile from "./pages/StudentProfile";
+import AllCourses from "./pages/AllCourses";
 
 axios.defaults.withCredentials = true;
 
 function App() {
-  // const [query, setQuery] = useState("Dashboard");
+  
 
   return (
     <div className="App">
       <Router>
       <ToastContainer />
-        {/* <Sidebar setQuery={setQuery} />
-        console.log(setQuery);
-        <Navbar query={query} /> */}
+        
         <Routes>
           <Route path="/" exact element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -56,6 +52,7 @@ function App() {
           <Route path="/userManagement" element={<AdminUserManagement />} />
           <Route path="/courseManagement" element={<AdminCourseManagement />} />
           <Route path="/profile" element={<StudentProfile/>} />
+          <Route path="/all-courses" element={<AllCourses/>} />
         </Routes>
       </Router>
     </div>

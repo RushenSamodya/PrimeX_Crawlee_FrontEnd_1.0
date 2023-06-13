@@ -22,6 +22,7 @@ import {
   EnrollBtn,
   Bottom,
 } from "../styles/pageStyles/SingleCourseStyles";
+import { StyledLink } from "./AllCourses";
 
 const labels = {
   0.5: "Useless",
@@ -95,17 +96,18 @@ const SingleCourse = () => {
     (item) => item.courseId === path
   );
 
-  const isFinalStage = matchedCourse && parseInt(matchedCourse.progress) + 1 === courseLessonsLength;
-
-
+  const isFinalStage =
+    matchedCourse &&
+    parseInt(matchedCourse.progress) + 1 === courseLessonsLength;
 
   console.log("isCourseIdMatched", isCourseIdMatched);
   console.log("courseLessonsLength", courseLessonsLength);
   console.log(
-    "progress", matchedCourse && parseInt(matchedCourse.progress) + 1
+    "progress",
+    matchedCourse && parseInt(matchedCourse.progress) + 1
   );
 
-  console.log("isFinalStage",isFinalStage);
+  console.log("isFinalStage", isFinalStage);
 
   const handleEnroll = async () => {
     try {
@@ -113,27 +115,37 @@ const SingleCourse = () => {
         userId: user._id,
         courseId: path,
       };
-      console.log('payload',payload)
-      const response = await axios.post('http://localhost:8800/api/users/enroll', payload);
+      console.log("payload", payload);
+      const response = await axios.post(
+        "http://localhost:8800/api/users/enroll",
+        payload
+      );
       setToggle(true);
       console.log(response);
     } catch (error) {
-      
       console.error(error);
     }
   };
-  
 
   return (
     <>
       <NavbarHorizontal />
       {course && (
         <Container>
+          
           <Header>
+          
             <Top>
               <TopWrapper>
-                <ImageContainer src={course.courseCover[0].url} alt="" />
-
+                <ImageContainer
+                  src={
+                    course.courseCover.length != 0
+                      ? course.courseCover[0].url
+                      : ""
+                  }
+                  alt=""
+                />
+                
                 <InfoContainer>
                   <CourseName>{course.courseName}</CourseName>
                   <CourseDesc>{course.description}</CourseDesc>
@@ -166,26 +178,26 @@ const SingleCourse = () => {
                     Instructor: {course.instructorName}
                   </InstructorName>
                 </InfoContainer>
+                
               </TopWrapper>
 
               {userEnrolledCourses.length !== 0 && (
                 <>
                   {user ? (
                     isCourseIdMatched ? (
-                      <></>
+                      <></> // Render nothing if courseId is matched
                     ) : (
-                      <>
-                        <EnrollBtn onClick={handleEnroll}>Enroll Now</EnrollBtn>
-                      </>
+                      <EnrollBtn onClick={handleEnroll}>Enroll Now</EnrollBtn> // Render EnrollBtn if courseId is not matched
                     )
                   ) : (
-                    <>
-                      <EnrollBtn onClick={handleEnroll}>Enroll Now</EnrollBtn>
-                    </>
+                    <StyledLink to="/login">
+                      <EnrollBtn>Enroll Now</EnrollBtn>
+                    </StyledLink>
                   )}
                 </>
               )}
             </Top>
+            {!user ? <h5>Login to enroll courses</h5> : ""}
             <Bottom>
               {course.lessons.length !== 0 &&
                 course.lessons.map((item, index) => (
@@ -194,9 +206,9 @@ const SingleCourse = () => {
                     topic={item.title}
                     description={item.description}
                     disable={
-                      (!user ||
-                      (!isCourseIdMatched ||
-                      (matchedCourse && matchedCourse.progress < index)))
+                      !user ||
+                      !isCourseIdMatched ||
+                      (matchedCourse && matchedCourse.progress < index)
                     }
                     video={item.material[0].url}
                     courseId={path}

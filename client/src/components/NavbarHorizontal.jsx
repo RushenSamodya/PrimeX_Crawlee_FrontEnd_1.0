@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import logo from "../assets/crawleeimg.png";
 import { LeftSide, LoginBtn, LogoutBtn, MainContainer, Middle, StyledNavLink, RightSide, btnStyles } from "../styles/componentStyles/NavbarHorizontalStyles";
 import { AuthContext } from "../context/AuthContext";
+import { StyledLink } from "../pages/AllCourses";
 
 
 function NavbarHorizontal() {
@@ -16,21 +17,24 @@ function NavbarHorizontal() {
     <div>
       <MainContainer>
         <LeftSide>
+        <StyledLink to="/">
           <img src={logo} alt="logo" className="logo" />
+        </StyledLink>
+          
         </LeftSide>
 
         <Middle>
-          <StyledNavLink to="/Pages/">Home</StyledNavLink>
+          <StyledNavLink to="/">Home</StyledNavLink>
 
-          <StyledNavLink to="/Pages/courses">Courses</StyledNavLink>
+          <StyledNavLink to="/all-courses">Courses</StyledNavLink>
 
-          <StyledNavLink to="/Pages/About">About</StyledNavLink>
+          <StyledNavLink to="/about">About</StyledNavLink>
         </Middle>
 
         <RightSide>
           {user ? (
             <>
-              <StyledNavLink to="/dashboard/">Dashboard</StyledNavLink>
+              <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
               <LoginBtn>
                 <Stack spacing={2} direction="row">
                   <Button

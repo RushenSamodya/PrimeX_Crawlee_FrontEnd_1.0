@@ -8,8 +8,8 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   flex: 1;
   margin: 5px;
-  max-width: 180px;
-  height: 240px;
+  max-width: 300px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,17 +37,17 @@ export const InfoContainer = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
 `;
 
 export const CourseCategory = styled.span`
-  font-size: 13px;
+  font-size: 20px;
   margin: 5px 0px 0px 10px;
   font-weight: 200;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: 155px;
+  width: 100%;
 `;
 
 export const DividerContainer = styled.div`
@@ -57,15 +57,15 @@ export const DividerContainer = styled.div`
 
 export const Divider = styled.div`
   background-color: #f0634c;
-  width: 90%;
+  width: 95%;
   height: 1px;
 `;
 export const CourseName = styled.h2`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 900;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: 160px;
+  width: 90%;
   margin: 0px 0px 10px 10px;
 `;
