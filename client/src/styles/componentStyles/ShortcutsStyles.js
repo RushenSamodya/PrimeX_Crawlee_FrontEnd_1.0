@@ -57,10 +57,10 @@ export const Button = styled.button`
   display: flex;
   gap: 15px;
   align-items: center;
-  padding: 15px 20px;
+  padding: 10px 12px;
   border-radius: 15px;
   border: #f0634c solid 2px;
-  background-color: white;
+  background-color: transparent;
   color: #f0634c;
   cursor: pointer;
   transition: all 0.2s ease-in;

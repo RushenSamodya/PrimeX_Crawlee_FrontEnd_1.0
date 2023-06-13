@@ -106,6 +106,22 @@ const SingleCourse = () => {
   );
 
   console.log("isFinalStage",isFinalStage);
+
+  const handleEnroll = async () => {
+    try {
+      const payload = {
+        userId: user._id,
+        courseId: path,
+      };
+      console.log('payload',payload)
+      const response = await axios.post('http://localhost:8800/api/users/enroll', payload);
+      setToggle(true);
+      console.log(response);
+    } catch (error) {
+      
+      console.error(error);
+    }
+  };
   
 
   return (
@@ -159,12 +175,12 @@ const SingleCourse = () => {
                       <></>
                     ) : (
                       <>
-                        <EnrollBtn>Enroll Now</EnrollBtn>
+                        <EnrollBtn onClick={handleEnroll}>Enroll Now</EnrollBtn>
                       </>
                     )
                   ) : (
                     <>
-                      <EnrollBtn>Enroll Now</EnrollBtn>
+                      <EnrollBtn onClick={handleEnroll}>Enroll Now</EnrollBtn>
                     </>
                   )}
                 </>
