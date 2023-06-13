@@ -1,4 +1,19 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: unset;
+
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+    color: unset;
+  }
+`;
 
 export const Container = styled.div`
   display: flex;
@@ -27,4 +42,5 @@ export const Title = styled.span`
   font-size: 18px;
   font-weight: 600;
 `;
+
 

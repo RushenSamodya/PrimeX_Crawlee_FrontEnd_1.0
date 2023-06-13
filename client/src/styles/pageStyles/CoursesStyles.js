@@ -1,4 +1,19 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: unset;
+
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+    color: unset;
+  }
+`;
 
 export const Container = styled.div`
   height: 100%;
@@ -98,7 +113,7 @@ export const ImageContainer = styled.img`
 export const InfoContainer = styled.div`
   font-size: 10px;
   height: 90%;
-  width: 80%;
+  width: 75%;
 
   display: flex;
   flex-direction: column;

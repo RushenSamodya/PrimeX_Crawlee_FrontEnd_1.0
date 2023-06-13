@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import PublicIcon from "@mui/icons-material/Public";
 import {
   Button,
   Container,
@@ -33,6 +34,7 @@ import {
   InfoContainer,
   TopSection,
   Wrapper,
+  StyledLink,
 } from "../styles/pageStyles/CoursesStyles";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
@@ -155,7 +157,6 @@ function Courses() {
     axios
       .get(`http://localhost:8800/api/courses`)
       .then(({ data }) => {
-
         filteredArray = data.filter((item) => item.instructor === user._id);
         setFilteredCourses(filteredArray);
       })
@@ -164,7 +165,7 @@ function Courses() {
       });
   }, []);
 
-  console.log("teacher's courses",filteredCourses)
+  console.log("teacher's courses", filteredCourses);
 
   return (
     <>
@@ -213,22 +214,27 @@ function Courses() {
                   </CourseTypeSection>
                   <CourseTab>
                     <Wrapper>
-                      {filteredCourses.map((item,index) => (
+                      {filteredCourses.map((item, index) => (
                         <CourseBar key={index}>
-                          <ImageContainer src={
-                                item.courseCover.length != 0
-                                  ? item.courseCover[0].url
-                                  : ""
-                              } />
+                          <ImageContainer
+                            src={
+                              item.courseCover.length != 0
+                                ? item.courseCover[0].url
+                                : ""
+                            }
+                          />
                           <InfoContainer>
-                            <CourseCategory>{item.courseCategory}</CourseCategory>
+                            <CourseCategory>
+                              {item.courseCategory}
+                            </CourseCategory>
                             <CourseName>{item.courseName}</CourseName>
-                            
                           </InfoContainer>
                           <Icon>
+                            <StyledLink  to={`/course-edit/${item._id}`}>
                             <EditButton>
                               <MdEdit />
                             </EditButton>
+                            </StyledLink>
                             <DeleteButton>
                               <AiFillDelete />
                             </DeleteButton>
@@ -248,26 +254,26 @@ function Courses() {
                     <Wrapper>
                       {courses.items.length !== 0 &&
                         courses.items.map((item, index) => (
-                          <Link key={index} to={`/courses/${item._id}`}>
-                          <CourseBar >
-                            <ImageContainer
-                              src={
-                                item.courseCover.length != 0
-                                  ? item.courseCover[0].url
-                                  : ""
-                              }
-                            />
-                            <InfoContainer>
-                              <CourseCategory>
-                                {item.courseCategory}
-                              </CourseCategory>
-                              <CourseName>{item.courseName}</CourseName>
-                              <CourseInstructor>
-                                By: {item.instructorName}
-                              </CourseInstructor>
-                            </InfoContainer>
-                          </CourseBar>
-                          </Link>
+                          <StyledLink key={index} to={`/courses/${item._id}`}>
+                            <CourseBar>
+                              <ImageContainer
+                                src={
+                                  item.courseCover.length != 0
+                                    ? item.courseCover[0].url
+                                    : ""
+                                }
+                              />
+                              <InfoContainer>
+                                <CourseCategory>
+                                  {item.courseCategory}
+                                </CourseCategory>
+                                <CourseName>{item.courseName}</CourseName>
+                                <CourseInstructor>
+                                  By: {item.instructorName}
+                                </CourseInstructor>
+                              </InfoContainer>
+                            </CourseBar>
+                          </StyledLink>
                         ))}
                     </Wrapper>
                   </CourseTab>
@@ -285,22 +291,26 @@ function Courses() {
                 <Wrapper>
                   {courses.items.length !== 0 &&
                     courses.items.map((item, index) => (
-                      <CourseBar key={index}>
-                        <ImageContainer
-                          src={
-                            item.courseCover.length != 0
-                              ? item.courseCover[0].url
-                              : ""
-                          }
-                        />
-                        <InfoContainer>
-                          <CourseCategory>{item.courseCategory}</CourseCategory>
-                          <CourseName>{item.courseName}</CourseName>
-                          <CourseInstructor>
-                            By: {item.instructorName}
-                          </CourseInstructor>
-                        </InfoContainer>
-                      </CourseBar>
+                      <StyledLink key={index} to={`/courses/${item._id}`}>
+                        <CourseBar>
+                          <ImageContainer
+                            src={
+                              item.courseCover.length != 0
+                                ? item.courseCover[0].url
+                                : ""
+                            }
+                          />
+                          <InfoContainer>
+                            <CourseCategory>
+                              {item.courseCategory}
+                            </CourseCategory>
+                            <CourseName>{item.courseName}</CourseName>
+                            <CourseInstructor>
+                              By: {item.instructorName}
+                            </CourseInstructor>
+                          </InfoContainer>
+                        </CourseBar>
+                      </StyledLink>
                     ))}
                 </Wrapper>
               </CourseTab>

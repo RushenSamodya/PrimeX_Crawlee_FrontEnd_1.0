@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import styled from "styled-components";
 import NavbarHorizontal from "../components/NavbarHorizontal";
 import axios from "axios";
 import Rating from "@mui/material/Rating";
@@ -8,6 +7,21 @@ import StarIcon from "@mui/icons-material/Star";
 import { Box } from "@mui/material";
 import Accordion from "../components/CustomizedAccordions";
 import CustomizedAccordions from "../components/CustomizedAccordions";
+import { AuthContext } from "../context/AuthContext";
+import {
+  Container,
+  Header,
+  Top,
+  TopWrapper,
+  ImageContainer,
+  InfoContainer,
+  CourseName,
+  CourseDesc,
+  Ratings,
+  InstructorName,
+  EnrollBtn,
+  Bottom,
+} from "../styles/pageStyles/SingleCourseStyles";
 
 const labels = {
   0.5: "Useless",
@@ -26,115 +40,73 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
-const Container = styled.div`
-  width: 100%;
-  padding: 20px 10px;
-`;
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 80px;
-`;
-
-const Top = styled.div`
-  display: flex;
-  
-  justify-content: center;
-  align-items: flex-start;
-  gap: 50px;
-  background: #d1913c; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #ffd194,
-    #d1913c
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #ffd194,
-    #d1913c
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  padding: 20px;
-  border-radius: 10px;
-  width: 70%;
-`;
-
-const TopWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 50px;
-`;
-
-const ImageContainer = styled.img`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cove2;
-`;
-
-const InfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 10px;
-`;
-
-
-const Bottom = styled.div`
-    width: 70%;
-`;
-
-const CourseName = styled.h2`
-  font-weight: 700;
-  margin-bottom: 30px;
-`;
-
-const CourseDesc = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Ratings = styled.div`
-  display: flex;
-  margin-bottom: 30px;
-`;
-
-const InstructorName = styled.div`
-  font-size: 20px;
-  font-weight: 600;
-`;
-
-const EnrollBtn = styled.button`
-    width: fit-content;
-    padding: 4px 10px;
-    border-radius: 5px;
-    background-color: white;
-    border: none;
-    color: #f0634c;
-    font-weight: 600;
-`;
-
 const SingleCourse = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
   const [course, setCourse] = useState("");
+  const [courseLessonsLength, setCourseLessonsLength] = useState("");
+  const [progress, setProgress] = useState("");
+  const [userEnrolledCourses, setUserEnrolledCourses] = useState([]);
+  const [toggle, setToggle] = useState(false);
+
   const [value, setValue] = useState(2);
   const [hover, setHover] = useState(-1);
 
+  const { user } = useContext(AuthContext);
+
   useEffect(() => {
-    axios
-      .get(`http://localhost:8800/api/courses/${path}`)
-      .then(({ data }) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8800/api/courses/${path}`
+        );
+        const data = response.data;
+        // console.log("courseDetails", data);
         setCourse(data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+        setCourseLessonsLength(data.lessons.length);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
   }, []);
 
-  console.log("course", course);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8800/api/users/${user._id}`
+        );
+        const data = response.data.enrolledCourses;
+        console.log("userEnrolledCourses", data);
+        setUserEnrolledCourses(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [toggle]);
+
+  const isCourseIdMatched = userEnrolledCourses.some(
+    (item) => item.courseId === path
+  );
+
+  const matchedCourse = userEnrolledCourses.find(
+    (item) => item.courseId === path
+  );
+
+  const isFinalStage = matchedCourse && parseInt(matchedCourse.progress) + 1 === courseLessonsLength;
+
+
+
+  console.log("isCourseIdMatched", isCourseIdMatched);
+  console.log("courseLessonsLength", courseLessonsLength);
+  console.log(
+    "progress", matchedCourse && parseInt(matchedCourse.progress) + 1
+  );
+
+  console.log("isFinalStage",isFinalStage);
+  
 
   return (
     <>
@@ -179,12 +151,47 @@ const SingleCourse = () => {
                   </InstructorName>
                 </InfoContainer>
               </TopWrapper>
-              <EnrollBtn>Enroll Now</EnrollBtn>
+
+              {userEnrolledCourses.length !== 0 && (
+                <>
+                  {user ? (
+                    isCourseIdMatched ? (
+                      <></>
+                    ) : (
+                      <>
+                        <EnrollBtn>Enroll Now</EnrollBtn>
+                      </>
+                    )
+                  ) : (
+                    <>
+                      <EnrollBtn>Enroll Now</EnrollBtn>
+                    </>
+                  )}
+                </>
+              )}
             </Top>
             <Bottom>
-            {course.lessons.length !== 0 && course.lessons.map((item, index) => (
-                <CustomizedAccordions key={index} topic={item.title} description={item.description}/>
-                )) }
+              {course.lessons.length !== 0 &&
+                course.lessons.map((item, index) => (
+                  <CustomizedAccordions
+                    key={index}
+                    topic={item.title}
+                    description={item.description}
+                    disable={
+                      (!user ||
+                      (!isCourseIdMatched ||
+                      (matchedCourse && matchedCourse.progress < index)))
+                    }
+                    video={item.material[0].url}
+                    courseId={path}
+                    toggle={toggle}
+                    setToggle={setToggle}
+                    buttonVisibility={
+                      matchedCourse && matchedCourse.progress > index
+                    }
+                    isFinalStage={isFinalStage}
+                  />
+                ))}
             </Bottom>
           </Header>
         </Container>

@@ -4,17 +4,19 @@ import {
   Container,
   CourseContainer,
   Title,
+  StyledLink
 } from "../styles/componentStyles/RecentCoursesStyles";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+
 
 const RecentCourses = () => {
   const { user } = useContext(AuthContext);
   const [courseData, setCourseData] = useState({
     items: [],
   });
-  
-  const [ sortedData, setSortedData] = useState([])
+
+  const [sortedData, setSortedData] = useState([]);
 
   useEffect(() => {
     axios
@@ -56,29 +58,39 @@ const RecentCourses = () => {
     // console.log("Use Effect Enrolled Courses", courseData);
 
     if (courseData.items.length === user.enrolledCourses.length) {
-      setSortedData( [...courseData.items].sort(
-        (a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt)
-      ))
-      console.log('sorted courses', sortedData)
-
-
+      setSortedData(
+        [...courseData.items].sort(
+          (a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt)
+        )
+      );
+      console.log("sorted courses", sortedData);
     }
-
-    
-
   }, [courseData]);
+
+  console.log('sortedData',sortedData)
 
   return (
     <Container>
       <Title>Recently Accessed Courses</Title>
       <CourseContainer>
-
-        { sortedData.length == 0 ? <span style={{color:'#f0634c'}}>You haven't enrolled to any course.</span> : <>{ sortedData.slice(0, 5).map((item,index) => (
-          <Course key={index} image={item.courseCover[0].url} category={item.courseCategory} coursename={item.courseName}/>
-        ))}</> }
-
-        
-        
+        {sortedData.length == 0 ? (
+          <span style={{ color: "#f0634c" }}>
+            You haven't enrolled to any course.
+          </span>
+        ) : (
+          <>
+            {sortedData.slice(0, 5).map((item, index) => (
+              <StyledLink key={index} to={`/courses/${item.courseId}`}>
+                <Course
+    
+                  image={item.courseCover[0].url}
+                  category={item.courseCategory}
+                  coursename={item.courseName}
+                />
+              </StyledLink>
+            ))}
+          </>
+        )}
       </CourseContainer>
     </Container>
   );

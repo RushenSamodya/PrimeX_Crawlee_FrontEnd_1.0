@@ -1,9 +1,12 @@
-import { AiOutlineDashboard } from "react-icons/ai";
+
 import { ImBooks } from "react-icons/im";
 import { SiGooglechat } from "react-icons/si";
 import { TbWorld } from "react-icons/tb";
 import { BiLogOut } from "react-icons/bi";
-import logo from "../assets/logo.png";
+import {
+    FaUsers,
+ } from "react-icons/fa";
+import logo from "../../assets/logo.png";
 import {
   BottomSection,
   Container,
@@ -16,12 +19,12 @@ import {
   SidebarContainer,
   StyledLink,
   TopSection,
-} from "../styles/componentStyles/SideBarStyles";
+} from "../../styles/componentStyles/Admin/AdminSidebar";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
-function Sidebar({ setQuery }) {
+function AdminSidebar({ setQuery }) {
   const handleClick = (name) => {
     console.log(name);
     setQuery(name);
@@ -29,18 +32,18 @@ function Sidebar({ setQuery }) {
 
   const menuItem = [
     {
-      path: "/dashboard",
-      name: "Dashboard",
-      icon: <AiOutlineDashboard />,
+        path: "/userManagement",
+        name: "Users",
+        icon: <FaUsers />,
     },
     {
-      path: "/courses",
+      path: "/courseManagement",
       name: "Courses",
       icon: <ImBooks />,
     },
     {
-      path: "http://127.0.0.1:5173",
-      name: "Messages",
+      path: "/requests",
+      name: "Requests",
       icon: <SiGooglechat />,
     },
     {
@@ -95,4 +98,4 @@ function Sidebar({ setQuery }) {
   );
 }
 
-export default Sidebar;
+export default AdminSidebar;

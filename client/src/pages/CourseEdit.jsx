@@ -21,14 +21,16 @@ import * as Yup from "yup";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import { Snackbar } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import MuiAlert from "@mui/material/Alert";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const CreateCourse = () => {
+const CourseEdit = () => {
+  const location = useLocation();
+  const path = location.pathname.split("/")[2];
   const [query, setQuery] = useState("Create Course");
   const [courseCoverUrl, setCourseCoverUrl] = useState("");
   const [courseCoverPublicId, setCourseCoverPublicId] = useState("");
@@ -65,23 +67,23 @@ const CreateCourse = () => {
   };
 
   const onSubmit = async (values) => {
-    // console.log("Form data", values);
-    try {
-      const response = await axios.post(
-        "http://localhost:8800/api/courses",
-        values
-      );
-      console.log(response.data);
-      setSubmitButton(true);
-      setSnackbarType("success");
-      setSnackbarMsg("Created Successfully");
-      handleOpenSnackbar();
-      setTimeout(() => {
-        navigate("/courses");
-      }, 2000);
-    } catch (error) {
-      console.log(error);
-    }
+    
+    // try {
+    //   const response = await axios.post(
+    //     "http://localhost:8800/api/courses",
+    //     values
+    //   );
+    //   console.log(response.data);
+    //   setSubmitButton(true);
+    //   setSnackbarType("success");
+    //   setSnackbarMsg("Created Successfully");
+    //   handleOpenSnackbar();
+    //   setTimeout(() => {
+    //     navigate("/courses");
+    //   }, 2000);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const validationSchema = Yup.object({
@@ -145,7 +147,6 @@ const CreateCourse = () => {
       })
       .catch((e) => console.log(e));
   }
-
   return (
     <>
       <Sidebar setQuery={setQuery} />
@@ -206,15 +207,13 @@ const CreateCourse = () => {
                 <StyledLabel htmlFor="courseCover">
                   Course Cover Image
                 </StyledLabel>
-                {!courseCoverUrl && (
-                  <StyledButton
-                    type="button"
-                    name="courseCover"
-                    onClick={() => showWidgetCover(setFieldValue)}
-                  >
-                    Upload Course Cover
-                  </StyledButton>
-                )}
+                <StyledButton
+                  type="button"
+                  name="courseCover"
+                  onClick={() => showWidgetCover(setFieldValue)}
+                >
+                  Upload Course Cover
+                </StyledButton>
               </FieldWrapper>
               {courseCoverUrl && (
                 <ImageWrapper>
@@ -343,4 +342,4 @@ const CreateCourse = () => {
   );
 };
 
-export default CreateCourse;
+export default CourseEdit;

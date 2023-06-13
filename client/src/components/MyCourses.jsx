@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CourseProgress from "./CourseProgress";
 import { HiFilter } from "react-icons/hi";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -6,7 +6,7 @@ import { BottomContainer, BottomText, Container, CourseContainer, FilterIcon, He
 
 const MyCourses = () => {
   
-  
+  const [filterName, setFilterName] = useState("courseData")
 
   return (
     <Container>
@@ -20,15 +20,16 @@ const MyCourses = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">All</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Active Courses</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Completed Courses</Dropdown.Item>
+              <Dropdown.Item onClick={() => setFilterName("courseData")}>All</Dropdown.Item>
+              <Dropdown.Item onClick={() => setFilterName("completedCourses")}>Completed Courses</Dropdown.Item>
+              <Dropdown.Item >Active Courses</Dropdown.Item>
+              
             </Dropdown.Menu>
           </Dropdown>
         </FilterIcon>
       </TopSection>
       <CourseContainer>
-        <CourseProgress />
+        <CourseProgress filterName={filterName}/>
       </CourseContainer>
       <BottomContainer><BottomText></BottomText></BottomContainer>
     </Container>
