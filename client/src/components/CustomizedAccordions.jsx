@@ -113,6 +113,7 @@ export default function CustomizedAccordions({
               .then(({ response }) => {
                 setToggle(!toggle);
                 navigate("/dashboard");
+                window.open('/certificate');
                 return;
               })
               .catch((e) => {

@@ -1,4 +1,3 @@
-
 import { ImBooks } from "react-icons/im";
 import { SiGooglechat } from "react-icons/si";
 import { TbWorld } from "react-icons/tb";
@@ -23,6 +22,8 @@ import {
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function AdminSidebar({ setQuery }) {
   const handleClick = (name) => {
@@ -53,7 +54,18 @@ function AdminSidebar({ setQuery }) {
     },
   ];
 
-  const { dispatch } = useContext(AuthContext);
+  const { user,dispatch } = useContext(AuthContext);
+
+  const handleLogout = async() => {
+    try{
+      dispatch({ type: "LOGOUT" });
+      await axios.get("http://localhost:8800/api/auth/logout");
+      toast.success("Successfully logged out");
+    }
+    catch(error){
+      toast.error(error.response.data.message);
+    }
+  }
 
   return (
     <Container>
@@ -82,9 +94,7 @@ function AdminSidebar({ setQuery }) {
         <BottomSection>
           <NavLink to="/" style={{textDecoration:'none'}}>
             <LogoutBtn
-              onClick={() => {
-                dispatch({ type: "LOGOUT" });
-              }}
+              onClick={handleLogout}
             >
               <Icon>
                 <BiLogOut />

@@ -3,6 +3,8 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100%;
   padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Header = styled.div`
@@ -89,4 +91,8 @@ export const EnrollBtn = styled.button`
     border: none;
     color: #f0634c;
     font-weight: 600;
+`;
+
+export const CertificateWrapper = styled.div`
+    
 `;

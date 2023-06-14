@@ -12,7 +12,7 @@ const MyCourses = () => {
     <Container>
       <TopSection>
         <Header>My Courses</Header>
-        <FilterIcon>
+        {/* <FilterIcon>
           {" "}
           <Dropdown>
             <Dropdown.Toggle variant="secondary" id="dropdown-basic">
@@ -26,7 +26,7 @@ const MyCourses = () => {
               
             </Dropdown.Menu>
           </Dropdown>
-        </FilterIcon>
+        </FilterIcon> */}
       </TopSection>
       <CourseContainer>
         <CourseProgress filterName={filterName}/>

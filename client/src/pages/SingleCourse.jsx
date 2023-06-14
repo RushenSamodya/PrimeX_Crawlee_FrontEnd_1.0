@@ -21,6 +21,7 @@ import {
   InstructorName,
   EnrollBtn,
   Bottom,
+  CertificateWrapper
 } from "../styles/pageStyles/SingleCourseStyles";
 import { StyledLink } from "./AllCourses";
 
@@ -49,6 +50,7 @@ const SingleCourse = () => {
   const [progress, setProgress] = useState("");
   const [userEnrolledCourses, setUserEnrolledCourses] = useState([]);
   const [toggle, setToggle] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false);
 
   const [value, setValue] = useState(2);
   const [hover, setHover] = useState(-1);
@@ -222,6 +224,7 @@ const SingleCourse = () => {
                 ))}
             </Bottom>
           </Header>
+          
         </Container>
       )}
     </>

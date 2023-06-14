@@ -12,14 +12,11 @@ import { CenterContainer, Container, Icon, IconBtn, LeftContainer, Line, LinkTex
 import { AuthContext } from "../../context/AuthContext";
 
 
-export default function AdminNavbar({ query }) {
-//   const teacher = true;
-//   const [show, setShow] = useState(false);
 
-//   const { user,dispatch } = useContext(AuthContext);
+export default function AdminNavbar() {
 
-//   const handleClose = () => setShow(false);
-//   const handleShow = () => setShow(true);
+  const { user } = useContext(AuthContext);
+
   return (
     <Container data-aos="fade-down">
       <LeftContainer></LeftContainer>
@@ -27,14 +24,10 @@ export default function AdminNavbar({ query }) {
       </CenterContainer>
       <RightContainer>
         <Icon>
-          <RiNotification2Fill />
-        </Icon>
-        <Line></Line>
-        <Icon>
           <FaUserCircle />
         </Icon>
         <NameContainer>
-          <Username>name</Username>
+          <Username>{user.username}</Username>
           <Role>Admin</Role>
         </NameContainer>
       </RightContainer>

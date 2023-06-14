@@ -20,6 +20,8 @@ import {
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 function Sidebar({ setQuery }) {
   const handleClick = (name) => {
@@ -50,7 +52,18 @@ function Sidebar({ setQuery }) {
     },
   ];
 
-  const { dispatch } = useContext(AuthContext);
+  const { user,dispatch } = useContext(AuthContext);
+
+  const handleLogout = async() => {
+    try{
+      dispatch({ type: "LOGOUT" });
+      await axios.get("http://localhost:8800/api/auth/logout");
+      toast.success("Successfully logged out");
+    }
+    catch(error){
+      toast.error(error.response.data.message);
+    }
+}
 
   return (
     <Container>
@@ -79,9 +92,7 @@ function Sidebar({ setQuery }) {
         <BottomSection>
           <NavLink to="/" style={{textDecoration:'none'}}>
             <LogoutBtn
-              onClick={() => {
-                dispatch({ type: "LOGOUT" });
-              }}
+              onClick={handleLogout}
             >
               <Icon>
                 <BiLogOut />

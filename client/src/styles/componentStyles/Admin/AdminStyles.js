@@ -106,7 +106,7 @@ export const UserList = styled.div`
    flex-direction: column;
    align-items: flex-start;
    justify-content: flex-start;
-   background: #f5f5f5;
+   background: white;
    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
    border-radius: 10px;
    padding: 30px;

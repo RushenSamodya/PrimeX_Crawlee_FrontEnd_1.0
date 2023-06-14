@@ -20,6 +20,8 @@ import SingleCourse from "./pages/SingleCourse";
 import CourseEdit from "./pages/CourseEdit";
 import StudentProfile from "./pages/StudentProfile";
 import AllCourses from "./pages/AllCourses";
+import Request from "./pages/Request";
+import Certificate from "./components/Certificate/Certificate";
 
 axios.defaults.withCredentials = true;
 
@@ -53,6 +55,8 @@ function App() {
           <Route path="/courseManagement" element={<AdminCourseManagement />} />
           <Route path="/profile" element={<StudentProfile/>} />
           <Route path="/all-courses" element={<AllCourses/>} />
+          <Route path="/requests" element={<Request/>} />
+          <Route path="/certificate" element={<Certificate/>} />
         </Routes>
       </Router>
     </div>

@@ -5,22 +5,33 @@ import Button from "@mui/material/Button";
 import logo from "../assets/crawleeimg.png";
 import { LeftSide, LoginBtn, LogoutBtn, MainContainer, Middle, StyledNavLink, RightSide, btnStyles } from "../styles/componentStyles/NavbarHorizontalStyles";
 import { AuthContext } from "../context/AuthContext";
-import { StyledLink } from "../pages/AllCourses";
-
+import axios from "axios";
+import { toast } from "react-toastify"
+import { StyledLink } from "../styles/componentStyles/CourseProgressStyles";
 
 function NavbarHorizontal() {
   const navigate = useNavigate();
 
   const { user,dispatch } = useContext(AuthContext);
 
+  const handleLogout = async() => {
+    try{
+      dispatch({ type: "LOGOUT" });
+      await axios.get("http://localhost:8800/api/auth/logout");
+      toast.success("Successfully logged out");
+    }
+    catch(error){
+      toast.error(error.response.data.message);
+    }
+}
+
   return (
     <div>
       <MainContainer>
         <LeftSide>
-        <StyledLink to="/">
-          <img src={logo} alt="logo" className="logo" />
-        </StyledLink>
-          
+          <StyledLink>
+            <img src={logo} alt="logo" className="logo" />
+          </StyledLink>
         </LeftSide>
 
         <Middle>
@@ -34,11 +45,11 @@ function NavbarHorizontal() {
         <RightSide>
           {user ? (
             <>
-              <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
+              <StyledNavLink to="/dashboard/">Dashboard</StyledNavLink>
               <LoginBtn>
                 <Stack spacing={2} direction="row">
                   <Button
-                    onClick={() => {dispatch({ type: "LOGOUT" });}}
+                    onClick={handleLogout}
                     sx={btnStyles}
                     variant="outlined"
                   >

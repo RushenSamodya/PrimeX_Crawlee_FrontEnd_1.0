@@ -79,6 +79,7 @@ const Signup = () => {
         if (user) {
           dispatch({ type: "LOGIN_SUCCESS", payload: user });
           navigate("/"); // Redirect to the desired route after successful signup
+          toast.success("Successfully signed up");
         }
       } catch (error) {
         toast.error(error.response.data.message);
@@ -87,9 +88,7 @@ const Signup = () => {
     },
   });
 
-  useEffect(() => {
-    dispatch({ type: "LOGOUT" }); // Reset the state when the component unmounts
-  }, [dispatch]);
+
 
   return (
    <Container>

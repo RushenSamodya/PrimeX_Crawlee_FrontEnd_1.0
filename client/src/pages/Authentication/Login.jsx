@@ -68,7 +68,14 @@ const Login = () => {
             const user = response.data;
 
             dispatch({ type: "LOGIN_SUCCESS", payload: user });
-            toast.success("Successfully logged in")
+
+            if(user.isAdmin){
+               navigate("/userManagement");
+               toast.success("Successfully logged in as an admin")
+            }else{
+               navigate("/");
+               toast.success("Successfully logged in")
+            }
          } catch (error) {
           toast.error(error.response.data.message);
             dispatch({ type: "LOGIN_FAILURE", payload: error.message });
@@ -76,11 +83,7 @@ const Login = () => {
       },
    });
 
-   useEffect(() => {
-      if (user) {
-         navigate("/");
-      }
-   }, [user, navigate]);
+  
 
    return (
       <Container>
