@@ -374,7 +374,7 @@ const checkPhoneFormat = () => {
           </Container2>
           
 
-          <Container3>
+          {/* <Container3>
             <BadgeItems>
               <BadgeText>Earned Badges</BadgeText>
               <BadgeIcons>
@@ -389,7 +389,7 @@ const checkPhoneFormat = () => {
                 </BadgeIcon3>
               </BadgeIcons>
             </BadgeItems>
-          </Container3>
+          </Container3> */}
           <StudentChart/>
         </ContainerMain>
       </BigContainer>

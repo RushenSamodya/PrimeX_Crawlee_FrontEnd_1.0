@@ -23,6 +23,8 @@ import { AuthContext } from "../context/AuthContext";
 import { Snackbar } from "@mui/material";
 import { useNavigate } from "react-router";
 import MuiAlert from "@mui/material/Alert";
+import Modal from 'react-bootstrap/Modal';
+import Button0 from 'react-bootstrap/Button';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -36,6 +38,7 @@ const CreateCourse = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarType, setSnackbarType] = useState("");
   const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [courseNames, setCourseNames] = useState();
 
   const navigate = useNavigate();
 
@@ -67,6 +70,15 @@ const CreateCourse = () => {
   const onSubmit = async (values) => {
     // console.log("Form data", values);
     try {
+
+      const isCourseNameExist = await checkCourseNames(values.courseName);
+      if (isCourseNameExist) {
+        setSnackbarType("error");
+        setSnackbarMsg("Course Name already exists");
+        handleOpenSnackbar();
+        return;
+      }
+
       const response = await axios.post(
         "http://localhost:8800/api/courses",
         values
@@ -85,7 +97,11 @@ const CreateCourse = () => {
   };
 
   const validationSchema = Yup.object({
-    courseName: Yup.string().required("Required"),
+    courseName: Yup.string().required("Course Name is Required"),
+    courseCategory: Yup.string().required("Course Category is Required"),
+    description: Yup.string().required("Course Description is Required"),
+    mTitle: Yup.string().required("Title is Required."),
+    mDescription: Yup.string().required("Material Description is Required."),
   });
 
   initialValues.instructor = user._id;
@@ -146,6 +162,21 @@ const CreateCourse = () => {
       .catch((e) => console.log(e));
   }
 
+  const checkCourseNames = (enteredValue) => {
+    axios.get("http://localhost:8800/api/courses/names/all")
+    .then((res) => {
+      console.log(res.data);
+      setCourseNames(res.data);
+    })
+    .catch((e) => console.log(e));
+    return courseNames.some((item) => item === enteredValue);
+  };
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
   return (
     <>
       <Sidebar setQuery={setQuery} />
@@ -189,6 +220,7 @@ const CreateCourse = () => {
               <FieldWrapper>
                 <StyledLabel htmlFor="description">Description</StyledLabel>
                 <StyledField type="text" id="description" name="description" />
+                <StyledErrorMessage component="span" name="description" />
               </FieldWrapper>
 
               <FieldWrapper>
@@ -200,6 +232,7 @@ const CreateCourse = () => {
                   id="courseCategory"
                   name="courseCategory"
                 />
+                <StyledErrorMessage component="span" name="courseCategory" />
               </FieldWrapper>
 
               <FieldWrapper>
@@ -254,6 +287,7 @@ const CreateCourse = () => {
                               type="text"
                               name={`lessons[${index}].title`}
                             />
+                            <StyledErrorMessage component="span" name="mTitle" />
                             <StyledLabel htmlFor="instructor">
                               Description
                             </StyledLabel>
@@ -302,20 +336,36 @@ const CreateCourse = () => {
                             </div>
 
                             {
-                              <StyledSecondaryButton
-                                type="button"
-                                onClick={() => remove(index)}
-                              >
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
+                              <>
+                                <StyledSecondaryButton
+                                  type="button"
+                                  onClick={handleShow}
                                 >
-                                  Remove
-                                  <DeleteIcon fontSize="small" />
-                                </div>
-                              </StyledSecondaryButton>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    Remove
+                                    <DeleteIcon fontSize="small" />
+                                  </div>
+                                </StyledSecondaryButton>
+                                <Modal show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+                                  <Modal.Header closeButton>
+                                    <Modal.Title>Delete Material</Modal.Title>
+                                  </Modal.Header>
+                                  <Modal.Body>Do you want to confirm delete?</Modal.Body>
+                                  <Modal.Footer>
+                                    <Button0 variant="secondary" onClick={handleClose}>
+                                      Cancel
+                                    </Button0>
+                                    <Button0 variant="primary" onClick={() => {remove(index); handleClose();}}>
+                                      Delete
+                                    </Button0>
+                                  </Modal.Footer>
+                                </Modal>
+                              </>
                             }
                           </DynamicFieldWrapper>
                         </div>

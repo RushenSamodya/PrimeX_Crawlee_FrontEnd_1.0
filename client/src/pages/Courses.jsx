@@ -38,6 +38,11 @@ import {
 } from "../styles/pageStyles/CoursesStyles";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Modal from "react-bootstrap/Modal";
+import Button0 from "react-bootstrap/Button";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -167,6 +172,51 @@ function Courses() {
 
   console.log("teacher's courses", filteredCourses);
 
+  function filterData(courses, searchKey) {
+    const result = courses.filter(
+      (item) =>
+        item.courseName.toLowerCase().includes(searchKey) ||
+        item.courseCategory.toLowerCase().includes(searchKey)
+    );
+    setCourses({ items: result });
+  }
+
+  const onSearch = (e) => {
+    const searchKey = e.currentTarget.value;
+    axios.get("http://localhost:8800/api/courses").then(({ data }) => {
+      filterData(data, searchKey);
+    });
+  };
+
+  const sortedCourses = courses.items.slice().sort((a, b) => {
+    const courseNameA = a.courseName.toLowerCase();
+    const courseNameB = b.courseName.toLowerCase();
+    if (courseNameA < courseNameB) {
+      return -1;
+    }
+    if (courseNameA > courseNameB) {
+      return 1;
+    }
+    return 0;
+  });
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const onDelete = (id) => {
+    axios
+      .delete(`http://localhost:8800/api/courses/${id}`)
+      .then((res) => {
+        console.log(res.data.message);
+        // Update the courses state
+        setCourses((prevCourses) => {
+          prevCourses.filter((course) => course._id !== id);
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <Sidebar setQuery={setQuery} />
@@ -203,7 +253,7 @@ function Courses() {
                     </CreateCourse>
                   </TopSection>
 
-                  <CourseTypeSection>
+                  {/* <CourseTypeSection>
                     <CourseType>All Courses</CourseType>
                     <Divider />
                     <CourseType>Published</CourseType>
@@ -211,7 +261,7 @@ function Courses() {
                     <CourseType>Draft</CourseType>
                     <Divider />
                     <CourseType>Archived</CourseType>
-                  </CourseTypeSection>
+                  </CourseTypeSection> */}
                   <CourseTab>
                     <Wrapper>
                       {filteredCourses.map((item, index) => (
@@ -230,14 +280,48 @@ function Courses() {
                             <CourseName>{item.courseName}</CourseName>
                           </InfoContainer>
                           <Icon>
-                            <StyledLink  to={`/course-edit/${item._id}`}>
-                            <EditButton>
-                              <MdEdit />
-                            </EditButton>
+                            <StyledLink to={`/course-edit/${item._id}`}>
+                              <EditButton>
+                                <MdEdit />
+                              </EditButton>
                             </StyledLink>
-                            <DeleteButton>
-                              <AiFillDelete />
-                            </DeleteButton>
+                            <>
+                              <DeleteButton onClick={handleShow}>
+                                <AiFillDelete />
+                              </DeleteButton>
+                              <Modal
+                                show={show}
+                                onHide={handleClose}
+                                size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered
+                              >
+                                <Modal.Header closeButton>
+                                  <Modal.Title>Delete Course</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                  Do you want to confirm delete?
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <Button0
+                                    variant="secondary"
+                                    onClick={handleClose}
+                                  >
+                                    Cancel
+                                  </Button0>
+                                  <Button0
+                                    variant="primary"
+                                    onClick={() => {
+                                      onDelete(item._id);
+                                      handleClose();
+                                      window.location.reload();
+                                    }}
+                                  >
+                                    Delete
+                                  </Button0>
+                                </Modal.Footer>
+                              </Modal>
+                            </>
                           </Icon>
                         </CourseBar>
                       ))}
@@ -250,6 +334,27 @@ function Courses() {
                   <TopSection>
                     <Header>Courses</Header>
                   </TopSection>
+                  {/* Newly Added */}
+                  <CourseTypeSection>
+                    <Form.Group
+                      as={Row}
+                      className="mb-3"
+                      controlId="formPlaintextPassword"
+                    >
+                      <Form.Label column sm="2">
+                        Search
+                      </Form.Label>
+                      <Col sm="10">
+                        <Form.Control
+                          type="text"
+                          placeholder="Search by Course Name or Category"
+                          onChange={onSearch}
+                          label="Search"
+                          style={{ width: "200%", marginLeft: "10px" }}
+                        />
+                      </Col>
+                    </Form.Group>
+                  </CourseTypeSection>
                   <CourseTab>
                     <Wrapper>
                       {courses.items.length !== 0 &&
@@ -287,6 +392,27 @@ function Courses() {
               <TopSection>
                 <Header>Courses</Header>
               </TopSection>
+              {/* Newly Added */}
+              <CourseTypeSection>
+                <Form.Group
+                  as={Row}
+                  className="mb-3"
+                  controlId="formPlaintextPassword"
+                >
+                  <Form.Label column sm="2">
+                    Search
+                  </Form.Label>
+                  <Col sm="10">
+                    <Form.Control
+                      type="text"
+                      placeholder="Search by Course Name or Category"
+                      onChange={onSearch}
+                      label="Search"
+                      style={{ width: "200%", marginLeft: "10px" }}
+                    />
+                  </Col>
+                </Form.Group>
+              </CourseTypeSection>
               <CourseTab>
                 <Wrapper>
                   {courses.items.length !== 0 &&

@@ -37,16 +37,18 @@ const UserManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [courseNames, setCourseNames] = useState({});
   const [filterRole, setFilterRole] = useState("All");
-  const [isLoading, setIsLoading] = useState(true); // Add isLoading state
+  const [isLoading, setIsLoading] = useState(false); // Add isLoading state
+  const [instructingCourseNames, setInstructingCourseNames] = useState({});
 
   const fetchUsers = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get("http://localhost:8800/api/users", {
         withCredentials: true,
-        
       });
-      
+
       const fetchedUsers = response.data;
+      console.log(response.data)
       setUsers(fetchedUsers);
       setTotalUsers(fetchedUsers.length);
 
@@ -64,9 +66,10 @@ const UserManagement = () => {
       const admins = fetchedUsers.filter((user) => user.isAdmin);
       setTotalAdmins(admins.length);
 
-      // Fetch and store the course names for each enrolled course
-      const enrolledCourseNames = {};
+      // Fetch and store the course names for each enrolled course of each user
+      if (response.data) {
       for (const user of response.data) {
+        const enrolledCourseNames = [];
         for (const enrolledCourse of user.enrolledCourses) {
           const courseResponse = await axios.get(
             `http://localhost:8800/api/courses/${enrolledCourse.courseId}`,
@@ -74,11 +77,36 @@ const UserManagement = () => {
               withCredentials: true,
             }
           );
-          enrolledCourseNames[enrolledCourse.courseId] =
-            courseResponse.data.courseName;
+          if (courseResponse && courseResponse.data && courseResponse.data.courseName) {
+          enrolledCourseNames.push(courseResponse.data.courseName);
+          console.log(enrolledCourseNames)
+          }
         }
+        courseNames[user._id] = enrolledCourseNames;
       }
-      setCourseNames(enrolledCourseNames);
+    }
+
+      console.log(courseNames);
+
+
+      // Fetch and store the course names of each and every course that a teacher teachs
+      const allCourses = await axios.get("http://localhost:8800/api/courses", {
+        withCredentials: true,
+      });
+
+
+      for(const user of response.data){
+        const teachingCourseNames = [];
+        if (user.isTeacher) {
+          for(const allCourse of allCourses.data){
+            if(allCourse.instructor == user._id){
+              teachingCourseNames.push(allCourse.courseName);
+            }
+          }
+          instructingCourseNames[user._id] = teachingCourseNames;
+      }
+    }
+    console.log(instructingCourseNames);
 
       setIsLoading(false); // Set isLoading to false after data fetching is complete
     } catch (error) {
@@ -89,12 +117,13 @@ const UserManagement = () => {
   useEffect(() => {
     // Fetch users from the backend API
     fetchUsers();
-  }, [user.token]);
+  }, []);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
+  //delete a user
   const deleteUser = async (userId) => {
     try {
       confirmAlert({
@@ -126,7 +155,7 @@ const UserManagement = () => {
     }
   };
 
-  // Filter users based on the search term and selected role
+  // Filter users based on the search query and selected role
   const filteredUsers = users.filter((user) => {
     const nameMatches = user.username
       .toLowerCase()
@@ -138,7 +167,6 @@ const UserManagement = () => {
       (filterRole === "Admin" && user.isAdmin);
     return nameMatches && roleMatches;
   });
-
 
   return (
     <>
@@ -258,12 +286,13 @@ const UserManagement = () => {
               // Render actual data when not loading
               <Table striped bordered hover responsive>
                 <thead>
-                  <tr class="table-danger">
+                  <tr className="table-danger">
                     <th>Id</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Enrolled courses</th>
+                    <th>Teaching courses</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
@@ -288,12 +317,30 @@ const UserManagement = () => {
                         />
                       </td>
                       <td>
-                        {user.enrolledCourses.map((enrolledCourse) => (
-                          <p key={enrolledCourse.courseId}>
-                            {courseNames[enrolledCourse.courseId]}
-                          </p>
-                        ))}
-                      </td>
+                      {user.isAdmin ? (
+                        <p style={{ color: '#49d8f8', fontSize: '1rem' }}>
+                          Cannot enroll 
+                        </p>
+                      ) : (
+                        courseNames[user._id].map((courseName) => (
+                          <p key={courseName}>{courseName}</p>
+                        )
+                        ))
+                      }
+                    </td>
+                    <td>
+                    { user.isTeacher ? (
+                        instructingCourseNames[user._id].map((instructingCourseName) => (
+                          <p key={instructingCourseName}>{instructingCourseName}</p>
+                        )
+                      )
+                      ) : (
+                        <p style={{ color: '#2bd742', fontSize: '1rem' }}>
+                          Cannot teach
+                        </p>
+                      )
+                      }
+                    </td>
                       <td>
                         <FaTrashAlt
                           color="red"
